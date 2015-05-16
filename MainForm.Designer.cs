@@ -28,37 +28,37 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.openSourceFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectSourceGpxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectTargetFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
+            this.gpxFileLabel = new System.Windows.Forms.Label();
             this.gpxFilenameTextBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.targetFolderLabel = new System.Windows.Forms.Label();
             this.targetTextBox = new System.Windows.Forms.TextBox();
-            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.button1 = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.menuStrip1.SuspendLayout();
+            this.targetFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.processButton = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.buildDatabaseBackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.mainMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
-            // openFileDialog1
+            // openSourceFileDialog
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openSourceFileDialog.FileName = "openFileDialog";
             // 
-            // menuStrip1
+            // mainMenuStrip
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(570, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.mainMenuStrip.Name = "mainMenuStrip";
+            this.mainMenuStrip.Size = new System.Drawing.Size(570, 24);
+            this.mainMenuStrip.TabIndex = 0;
+            this.mainMenuStrip.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
@@ -97,14 +97,14 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
-            // label1
+            // gpxFileLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 40);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "GPX File:";
+            this.gpxFileLabel.AutoSize = true;
+            this.gpxFileLabel.Location = new System.Drawing.Point(12, 39);
+            this.gpxFileLabel.Name = "gpxFileLabel";
+            this.gpxFileLabel.Size = new System.Drawing.Size(51, 13);
+            this.gpxFileLabel.TabIndex = 1;
+            this.gpxFileLabel.Text = "GPX File:";
             // 
             // gpxFilenameTextBox
             // 
@@ -115,14 +115,15 @@
             this.gpxFilenameTextBox.TabIndex = 2;
             this.gpxFilenameTextBox.Text = "C:\\Car\\Caches.gpx";
             // 
-            // label2
+            // targetFolderLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 75);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Target:";
+            this.targetFolderLabel.AutoSize = true;
+            this.targetFolderLabel.Location = new System.Drawing.Point(22, 78);
+            this.targetFolderLabel.Name = "targetFolderLabel";
+            this.targetFolderLabel.Size = new System.Drawing.Size(41, 13);
+            this.targetFolderLabel.TabIndex = 3;
+            this.targetFolderLabel.Text = "Target:";
+            this.targetFolderLabel.Click += new System.EventHandler(this.TargetFolderLabel_Click);
             // 
             // targetTextBox
             // 
@@ -133,47 +134,47 @@
             this.targetTextBox.TabIndex = 4;
             this.targetTextBox.Text = "E:\\";
             // 
-            // button1
+            // processButton
             // 
-            this.button1.Location = new System.Drawing.Point(70, 113);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(476, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Process";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.processButton.Location = new System.Drawing.Point(70, 113);
+            this.processButton.Name = "processButton";
+            this.processButton.Size = new System.Drawing.Size(476, 23);
+            this.processButton.TabIndex = 5;
+            this.processButton.Text = "Process";
+            this.processButton.UseVisualStyleBackColor = true;
+            this.processButton.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // progressBar1
+            // progressBar
             // 
-            this.progressBar1.Location = new System.Drawing.Point(70, 151);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(476, 23);
-            this.progressBar1.TabIndex = 6;
+            this.progressBar.Location = new System.Drawing.Point(70, 151);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(476, 23);
+            this.progressBar.TabIndex = 6;
             // 
-            // backgroundWorker1
+            // buildDatabaseBackgroundWorker
             // 
-            this.backgroundWorker1.WorkerReportsProgress = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1_DoWork);
-            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorker1_ProgressChanged);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1_RunWorkerCompleted);
+            this.buildDatabaseBackgroundWorker.WorkerReportsProgress = true;
+            this.buildDatabaseBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1_DoWork);
+            this.buildDatabaseBackgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorker1_ProgressChanged);
+            this.buildDatabaseBackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1_RunWorkerCompleted);
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(570, 195);
-            this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.progressBar);
+            this.Controls.Add(this.processButton);
             this.Controls.Add(this.targetTextBox);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.targetFolderLabel);
             this.Controls.Add(this.gpxFilenameTextBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "Form1";
-            this.Text = "Form1";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.Controls.Add(this.gpxFileLabel);
+            this.Controls.Add(this.mainMenuStrip);
+            this.MainMenuStrip = this.mainMenuStrip;
+            this.Name = "MainForm";
+            this.Text = "Audi POI Builder";
+            this.mainMenuStrip.ResumeLayout(false);
+            this.mainMenuStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -181,21 +182,21 @@
 
         #endregion
 
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.OpenFileDialog openSourceFileDialog;
+        private System.Windows.Forms.MenuStrip mainMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem selectSourceGpxToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label gpxFileLabel;
         private System.Windows.Forms.TextBox gpxFilenameTextBox;
         private System.Windows.Forms.ToolStripMenuItem selectTargetFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label targetFolderLabel;
         private System.Windows.Forms.TextBox targetTextBox;
-        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.FolderBrowserDialog targetFolderBrowserDialog;
+        private System.Windows.Forms.Button processButton;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.ComponentModel.BackgroundWorker buildDatabaseBackgroundWorker;
     }
 }
 

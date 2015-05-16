@@ -186,9 +186,9 @@ namespace Mcaddy.Audi
         /// <param name="e">Event Argument</param>
         private void SelectSourceGpxToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.openFileDialog1.ShowDialog() == DialogResult.OK)
+            if (this.openSourceFileDialog.ShowDialog() == DialogResult.OK)
             {
-                this.gpxFilenameTextBox.Text = this.openFileDialog1.FileName;
+                this.gpxFilenameTextBox.Text = this.openSourceFileDialog.FileName;
             }
         }
 
@@ -199,9 +199,9 @@ namespace Mcaddy.Audi
         /// <param name="e">Event Argument</param>
         private void SelectTargetFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (this.folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            if (this.targetFolderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
-                this.targetTextBox.Text = this.folderBrowserDialog1.SelectedPath;
+                this.targetTextBox.Text = this.targetFolderBrowserDialog.SelectedPath;
             }
         }
 
@@ -222,8 +222,8 @@ namespace Mcaddy.Audi
         /// <param name="e">Event Argument</param>
         private void Button1_Click(object sender, EventArgs e)
         {
-            this.backgroundWorker1.RunWorkerAsync();
-            this.button1.Enabled = false;
+            this.buildDatabaseBackgroundWorker.RunWorkerAsync();
+            this.processButton.Enabled = false;
         }
 
         /// <summary>
@@ -237,7 +237,7 @@ namespace Mcaddy.Audi
             if (Directory.Exists(this.targetTextBox.Text) && File.Exists(this.gpxFilenameTextBox.Text))
             {
                 // Load existing POIs
-                backgroundWorker1.ReportProgress(1, "Loading existing POIs");
+                buildDatabaseBackgroundWorker.ReportProgress(1, "Loading existing POIs");
                 Collection<PointOfInterestCategory> currentPois = new Collection<PointOfInterestCategory>();
                 if (PointOfInterestDatabase.Exists(this.targetTextBox.Text))
                 {
@@ -250,18 +250,18 @@ namespace Mcaddy.Audi
                     }
                 }
 
-                backgroundWorker1.ReportProgress(2, "Load GPX POIs");
+                buildDatabaseBackgroundWorker.ReportProgress(2, "Load GPX POIs");
                 Collection<PointOfInterestCategory> gpxPois = ProcessGpxFile(this.gpxFilenameTextBox.Text, "mcaddy", true);
 
                 Collection<PointOfInterestCategory> pointsOfInterest = MergePointsOfInterest(currentPois, gpxPois);
 
-                backgroundWorker1.ReportProgress(3, "Building Database");
+                buildDatabaseBackgroundWorker.ReportProgress(3, "Building Database");
                 PointOfInterestDatabase.BuildStaticContent(this.targetTextBox.Text, pointsOfInterest);
                 int loadedWaypoints = 0;
 
                 string databaseLocation = PointOfInterestDatabase.Build(this.targetTextBox.Text);
 
-                loadedWaypoints = PointOfInterestDatabase.Populate(databaseLocation, pointsOfInterest, this.backgroundWorker1);
+                loadedWaypoints = PointOfInterestDatabase.Populate(databaseLocation, pointsOfInterest, this.buildDatabaseBackgroundWorker);
 
                 GC.Collect();
 
@@ -278,8 +278,8 @@ namespace Mcaddy.Audi
         /// <param name="e">Event Argument</param>
         private void BackgroundWorker1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
-            this.progressBar1.Value = e.ProgressPercentage;
-            this.button1.Text = e.UserState.ToString();
+            this.progressBar.Value = e.ProgressPercentage;
+            this.processButton.Text = e.UserState.ToString();
         }
 
         /// <summary>
@@ -290,12 +290,17 @@ namespace Mcaddy.Audi
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1300:SpecifyMessageBoxOptions", Justification = "Our messagebox won't be right reading")]
         private void BackgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            this.progressBar1.Value = 100;
+            this.progressBar.Value = 100;
             MessageBox.Show(
                 string.Format(Resources.CompletionFormatString, e.Result),
                 Resources.CompletionTitle);
-            this.button1.Text = "Process";
-            this.button1.Enabled = true;
+            this.processButton.Text = "Process";
+            this.processButton.Enabled = true;
+        }
+
+        private void TargetFolderLabel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
