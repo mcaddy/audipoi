@@ -269,6 +269,13 @@ namespace Mcaddy.Audi
 
                 e.Result = loadedWaypoints;
             }
+            else
+            {
+                e.Result = -1;
+                MessageBox.Show(
+                Resources.FileNotFoundError,
+                Resources.ErrorTitle);
+            }
         }
         
         /// <summary>
@@ -291,9 +298,13 @@ namespace Mcaddy.Audi
         private void BackgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             this.progressBar.Value = 100;
-            MessageBox.Show(
-                string.Format(Resources.CompletionFormatString, e.Result),
-                Resources.CompletionTitle);
+            if ((int)e.Result >= 0)
+            {
+                MessageBox.Show(
+                    string.Format(Resources.CompletionFormatString, e.Result),
+                    Resources.CompletionTitle);
+            }
+
             this.processButton.Text = "Process";
             this.processButton.Enabled = true;
         }

@@ -407,6 +407,7 @@ namespace Mcaddy.Audi
             Directory.CreateDirectory(bitmapPath);
 
             int categoryCount = 0;
+
             foreach (PointOfInterestCategory category in categories)
             {
                 categoryCount++;

@@ -262,4 +262,10 @@ FileSize = "{3}"</value>
   <data name="CompletionTitle" xml:space="preserve">
     <value>Done!</value>
   </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="FileNotFoundError" xml:space="preserve">
+    <value>Soruce or destination invalid</value>
+  </data>
 </root>

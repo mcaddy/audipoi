@@ -74,26 +74,26 @@
             // selectSourceGpxToolStripMenuItem
             // 
             this.selectSourceGpxToolStripMenuItem.Name = "selectSourceGpxToolStripMenuItem";
-            this.selectSourceGpxToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.selectSourceGpxToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.selectSourceGpxToolStripMenuItem.Text = "Select Source Gpx";
             this.selectSourceGpxToolStripMenuItem.Click += new System.EventHandler(this.SelectSourceGpxToolStripMenuItem_Click);
             // 
             // selectTargetFolderToolStripMenuItem
             // 
             this.selectTargetFolderToolStripMenuItem.Name = "selectTargetFolderToolStripMenuItem";
-            this.selectTargetFolderToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.selectTargetFolderToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.selectTargetFolderToolStripMenuItem.Text = "Select Target Folder";
             this.selectTargetFolderToolStripMenuItem.Click += new System.EventHandler(this.SelectTargetFolderToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(175, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(174, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -113,7 +113,7 @@
             this.gpxFilenameTextBox.ReadOnly = true;
             this.gpxFilenameTextBox.Size = new System.Drawing.Size(264, 20);
             this.gpxFilenameTextBox.TabIndex = 2;
-            this.gpxFilenameTextBox.Text = "C:\\Car\\Caches.gpx";
+            this.gpxFilenameTextBox.Text = "C:\\Users\\mike\\Documents\\waypoints.gpx";
             // 
             // targetFolderLabel
             // 
@@ -132,7 +132,7 @@
             this.targetTextBox.ReadOnly = true;
             this.targetTextBox.Size = new System.Drawing.Size(141, 20);
             this.targetTextBox.TabIndex = 4;
-            this.targetTextBox.Text = "E:\\";
+            this.targetTextBox.Text = "F:\\";
             // 
             // processButton
             // 
