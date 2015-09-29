@@ -1,4 +1,0 @@
-C:\audipoi\Shared\bin\Debug\Mcaddy.Shared.dll
-C:\audipoi\Shared\bin\Debug\Mcaddy.Shared.pdb
-C:\audipoi\Shared\obj\Debug\Mcaddy.Shared.dll
-C:\audipoi\Shared\obj\Debug\Mcaddy.Shared.pdb
