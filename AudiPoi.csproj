@@ -91,6 +91,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudiPois\PointOfInterest.cs" />
+    <Compile Include="AudiPois\PointOfInterestCategory.cs" />
+    <Compile Include="AudiPois\PointOfInterestDatabase.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="DirectoryUtilities.cs" />
     <Compile Include="MainForm.cs">
@@ -100,9 +103,6 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="PointOfInterest.cs" />
-    <Compile Include="PointOfInterestCategory.cs" />
-    <Compile Include="PointOfInterestDatabase.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="MainForm.resx">

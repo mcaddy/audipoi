@@ -401,6 +401,7 @@ namespace Mcaddy.Audi
         /// </summary>
         /// <param name="rootPath">Target Path</param>
         /// <param name="categories">Categories to render</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1804:RemoveUnusedLocals", MessageId = "category", Justification = "I have not found a more efficent way to count the number of items in an enum")]
         private static void BuildBitmapsXml(string rootPath, IEnumerable<PointOfInterestCategory> categories)
         {
             string bitmapPath = string.Format(Resources.DataFilePath, rootPath, @"bitmaps\");

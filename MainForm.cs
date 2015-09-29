@@ -42,7 +42,7 @@ namespace Mcaddy.Audi
             //// other types to consider [Event Cache,Cache In Trash Out Event,Mega-Event Cache]
 
             // Category lookup
-            Dictionary<string, PointOfInterestCategory> categories = new Dictionary<string, PointOfInterestCategory>() 
+            Dictionary<string, PointOfInterestCategory> categories = new Dictionary<string, PointOfInterestCategory>()
                 {
                     { "Earthcache", new PointOfInterestCategory(0, "Earthcaches", Resources.earthcacheIcon) },
                     { "Letterbox Hybrid", new PointOfInterestCategory(1, "Letterbox Caches", Resources.letterboxIcon) },
@@ -274,10 +274,14 @@ namespace Mcaddy.Audi
                 e.Result = -1;
                 MessageBox.Show(
                 Resources.FileNotFoundError,
-                Resources.ErrorTitle);
+                Resources.ErrorTitle, 
+                MessageBoxButtons.OK, 
+                MessageBoxIcon.Error,
+                MessageBoxDefaultButton.Button1, 
+                MessageBoxOptions.RightAlign);
             }
         }
-        
+
         /// <summary>
         /// Handle the Progress Changed Event
         /// </summary>
