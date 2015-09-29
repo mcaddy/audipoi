@@ -1,0 +1,5 @@
+C:\audipoi\Shared\bin\Release\Mcaddy.Shared.dll
+C:\audipoi\Shared\bin\Release\Mcaddy.Shared.pdb
+C:\audipoi\Shared\obj\Release\Shared.csprojResolveAssemblyReference.cache
+C:\audipoi\Shared\obj\Release\Mcaddy.Shared.dll
+C:\audipoi\Shared\obj\Release\Mcaddy.Shared.pdb

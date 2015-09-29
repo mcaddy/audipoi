@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BitmapFormat" xml:space="preserve">
+    <value>bitmaps/image_{0}.png,0,0,33,33,-24,-24</value>
+  </data>
+  <data name="DataFilePath" xml:space="preserve">
+    <value>{0}\PersonalPOI\Package\0\default\{1}</value>
+  </data>
+  <data name="metainfo2TxtTemplate" xml:space="preserve">
+    <value>#############################################################################   
+#  	
+# This is the description file for the Software Update of Audi components
+#
+#############################################################################
+
+[common]
+skipSaveTrainName = "true"
+vendor = "AUDI"
+region = "Europe"
+variant = "FMU-*-*-EU-AU*"
+variant2 = "FMU-*-*-EU-VW*"
+variant3 = "FM2-*-*-EU-VW-*"
+variant4 = "FM2-*-*-EU-AU-*"
+variant5 = "FM2-*-*-EU-PO*" 
+variant6 = "FM2-*-*-EU-PO-*"
+release = "2012/2013"
+skipMetaChecksum = "true"
+skipFileCopyChecksum = "true"
+UserSWDL = "true"
+
+[PersonalPOI]
+VendorInfo = "AUDI"
+DeviceDescription = "Personal Poi Packages"
+
+ConfigComponent = "PersonalPOI"
+PacketName = "Package"
+ConfigCheckPath = "PersonalPOI/Package/0/default"
+ConfigFinalizePath = "/net/mmx/mnt/navdb/PersonalPOI/Package"
+IncludeModules = ",Package,"
+
+[PersonalPOI\Package\0\default\Dir]
+CheckSumSize = "524288"
+CheckSum = "{0}"
+FileSize = "{1}"
+CheckType = "skip"
+DeleteDestinationDirBeforeCopy = "true"
+Version = "1"
+UpdateOnlyExisting = "false"
+IsDestinationInFFS = "false"
+Source = ""
+Destination = "/net/mmx/mnt/navdb/PersonalPOI/Package"
+DisplayName = "Personal POIs"
+
+[PersonalPOI\InfoFile\0\default\File]
+CheckSumSize = "524288"
+CheckSum = "{2}"
+Version = "3"
+Source = "Update.txt"
+Destination = "/net/mmx/mnt/navdb/PersonalPOI/Update.txt"
+DisplayName = "Database Information"
+DeleteDestinationDirBeforeCopy = "true"
+UpdateOnlyExisting = "false"
+FileSize = "{3}"</value>
+  </data>
+  <data name="UpdateTxtFilePath" xml:space="preserve">
+    <value>{0}\PersonalPOI\InfoFile\0\default\Update.txt</value>
+  </data>
+  <data name="UpdateTxtTemplate" xml:space="preserve">
+    <value>device=PersonalPOI
+
+name.default=myAudi special destinations
+name.de_DE=myAudi Sonderziele
+name.en_GB=myAudi special destinations
+name.en_SA=myAudi points of interest
+name.es_ES=myAudi destinos especiales
+name.fr_FR=Destinations spéciales myAudi
+name.it_IT=Destinazioni speciali myAudi
+name.nl_NL=myAudi bijzondere reisdoelen
+name.pt_PT=myAudi destinos especiais
+name.ru_RU=myAudi oсобые цели
+name.pl_PL=myAudi cele specjalne
+name.cs_CZ=zvláštní cíle myAudi
+name.nb_NO=myAudi spesialmål
+name.sv_SE=myAudi specialmål
+name.tr_TR=myAudi özel hedef
+name.es_MX=Destinos especiales myAudi
+name.ar_SA=أهداف خاصة myAudi
+name.en_US=myAudi points of interest
+name.pt_BR=Destinos especiais myAudi
+
+version.default=Version {0:yyyy-MM-dd}
+version.de_DE=Version {0:yyyy-MM-dd}
+version.en_GB=Version {0:yyyy-MM-dd}
+version.en_SA=Version {0:yyyy-MM-dd}
+version.es_ES=Versión {0:yyyy-MM-dd}
+version.fr_FR=Version {0:yyyy-MM-dd}
+version.it_IT=Versione {0:yyyy-MM-dd}
+version.nl_NL=Versie {0:yyyy-MM-dd}
+version.pt_PT=Versão {0:yyyy-MM-dd}
+version.ru_RU=версия {0:yyyy-MM-dd}
+version.pl_PL=Wersja {0:yyyy-MM-dd}
+version.cs_CZ=Verze {0:yyyy-MM-dd}
+version.nb_NO=Versjon {0:yyyy-MM-dd}
+version.sv_SE=Version {0:yyyy-MM-dd}
+version.tr_TR=Sürüm {0:yyyy-MM-dd}
+version.es_MX=Versión {0:yyyy-MM-dd}
+version.ar_SA={0:dd-MM-yyyy} الإصدار
+version.en_US=Version {0:yyyy-MM-dd}
+version.pt_BR=Versão {0:yyyy-MM-dd}</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="stacking_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stacking_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="stacking_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\stacking_3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+</root>
