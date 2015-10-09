@@ -7,7 +7,9 @@ namespace Mcaddy
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.Linq;
+    using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
 
@@ -16,6 +18,42 @@ namespace Mcaddy
     /// </summary>
     public static class ExtensionMethods
     {
+        /// <summary>
+        /// Convert a String to it's Enum value
+        /// </summary>
+        /// <typeparam name="T">Enum type</typeparam>
+        /// <param name="name">the name to convert</param>
+        /// <returns>the Enum value</returns>
+        public static T StringToEnum<T>(string name)
+        {
+            return (T)Enum.Parse(typeof(T), name);
+        }
+
+        /// <summary>
+        /// Get the value of the Description attribute
+        /// </summary>
+        /// <param name="value">the enum to lookup</param>
+        /// <returns>value of the description attribute</returns>
+        public static string ToDescriptionString(this Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            DescriptionAttribute[] attributes =
+                (DescriptionAttribute[])fi.GetCustomAttributes(
+                typeof(DescriptionAttribute),
+                false);
+
+            if (attributes != null &&
+                attributes.Length > 0)
+            {
+                return attributes[0].Description;
+            }
+            else
+            {
+                return value.ToString();
+            }
+        }
+        
         /// <summary>
         /// Adds a Range of items to a Collection
         /// </summary>

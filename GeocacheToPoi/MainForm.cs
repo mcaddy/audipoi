@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Form1.cs" company="mcaddy">
+// <copyright file="MainForm.cs" company="mcaddy">
 //     All rights reserved
 // </copyright>
 //-----------------------------------------------------------------------
@@ -13,8 +13,8 @@ namespace Mcaddy.Audi
     using System.Linq;
     using System.Windows.Forms;
     using System.Xml;
-    using Mcaddy.GeocacheToPoi.Properties;
     using AudiPoiDatabase;
+    using Mcaddy.GeocacheToPoi.Properties;
 
     /// <summary>
     /// Main Form
@@ -45,14 +45,14 @@ namespace Mcaddy.Audi
             // Category lookup
             Dictionary<string, PointOfInterestCategory> categories = new Dictionary<string, PointOfInterestCategory>()
                 {
-                    { "Earthcache", new PointOfInterestCategory(0, "Earthcaches", Resources.earthcacheIcon) },
-                    { "Letterbox Hybrid", new PointOfInterestCategory(1, "Letterbox Caches", Resources.letterboxIcon) },
-                    { "Multi-cache", new PointOfInterestCategory(2, "Multi Caches", Resources.multiIcon) },
-                    { "Traditional Cache", new PointOfInterestCategory(3, "Traditional Caches", Resources.traditionalIcon) },
-                    { "Unknown Cache", new PointOfInterestCategory(4, "Mystery Caches", Resources.mysteryIcon) },
-                    { "Virtual Cache", new PointOfInterestCategory(5, "Virtual Caches", Resources.virtualIcon) },
-                    { "Wherigo Cache", new PointOfInterestCategory(6, "Wherigo Caches", Resources.wherigoIcon) },
-                    { "Webcam Cache", new PointOfInterestCategory(7, "Webcam Caches", Resources.webcamIcon) }
+                    { "Earthcache", new PointOfInterestCategory(0, "Caches - Earthcaches", Resources.earthcacheIcon) },
+                    { "Letterbox Hybrid", new PointOfInterestCategory(1, "Caches - Letterbox", Resources.letterboxIcon) },
+                    { "Multi-cache", new PointOfInterestCategory(2, "Caches - Multi", Resources.multiIcon) },
+                    { "Traditional Cache", new PointOfInterestCategory(3, "Caches - Traditional", Resources.traditionalIcon) },
+                    { "Unknown Cache", new PointOfInterestCategory(4, "Caches - Mystery", Resources.mysteryIcon) },
+                    { "Virtual Cache", new PointOfInterestCategory(5, "Caches - Virtual", Resources.virtualIcon) },
+                    { "Wherigo Cache", new PointOfInterestCategory(6, "Caches - Wherigo", Resources.wherigoIcon) },
+                    { "Webcam Cache", new PointOfInterestCategory(7, "Caches - Webcam", Resources.webcamIcon) }
                 };
 
             // Load GPX file
@@ -144,43 +144,6 @@ namespace Mcaddy.Audi
         }
 
         /// <summary>
-        /// Merge GPX Categories with the existing POI Categories
-        /// </summary>
-        /// <param name="currentPois">Current POI Categories</param>
-        /// <param name="gpxPois">GPX Categories</param>
-        /// <returns>A Merged list of Categories</returns>
-        private static Collection<PointOfInterestCategory> MergePointsOfInterest(Collection<PointOfInterestCategory> currentPois, Collection<PointOfInterestCategory> gpxPois)
-        {
-            Collection<PointOfInterestCategory> output = new Collection<PointOfInterestCategory>();
-
-            // Add the existing POIs that arn't in the GPX file
-            foreach (PointOfInterestCategory currentPoiCategory in currentPois)
-            {
-                // Search for an existing category matching the GPX category, 
-                if (gpxPois.Where(x => x.Name.Equals(currentPoiCategory.Name)).SingleOrDefault() == null)
-                {
-                    output.Add(currentPoiCategory);
-                }
-            }
-
-            // Add the GPX categories
-            foreach (PointOfInterestCategory gpxPoiCategory in gpxPois)
-            {
-                output.Add(gpxPoiCategory);
-            }
-
-            // Renumber
-            int counter = 1;
-            foreach (PointOfInterestCategory outputCategory in output)
-            {
-                outputCategory.Id = counter;
-                counter++;
-            }
-
-            return output;
-        }
-
-        /// <summary>
         /// Handle the Select Source Click event
         /// </summary>
         /// <param name="sender">Sender Argument</param>
@@ -194,15 +157,23 @@ namespace Mcaddy.Audi
         }
 
         /// <summary>
-        /// Select the Target Folder click event handler
+        /// Bind the Drive list
         /// </summary>
-        /// <param name="sender">Sender Argument</param>
-        /// <param name="e">Event Argument</param>
-        private void SelectTargetFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BindDriveList()
         {
-            if (this.targetFolderBrowserDialog.ShowDialog() == DialogResult.OK)
+            DriveInfo[] allDrives = DriveInfo.GetDrives();
+
+            foreach (DriveInfo d in allDrives)
             {
-                this.targetTextBox.Text = this.targetFolderBrowserDialog.SelectedPath;
+                if (d.DriveType.Equals(DriveType.Removable))
+                {
+                    targetDriveComboBox.Items.Add(d.Name);
+                }
+            }
+
+            if (targetDriveComboBox.Items.Count > 0)
+            {
+                targetDriveComboBox.SelectedIndex = 0;
             }
         }
 
@@ -223,7 +194,7 @@ namespace Mcaddy.Audi
         /// <param name="e">Event Argument</param>
         private void Button1_Click(object sender, EventArgs e)
         {
-            this.buildDatabaseBackgroundWorker.RunWorkerAsync();
+            this.buildDatabaseBackgroundWorker.RunWorkerAsync(this.targetDriveComboBox.SelectedItem);
             this.processButton.Enabled = false;
         }
 
@@ -235,38 +206,22 @@ namespace Mcaddy.Audi
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect", Justification = "Required to ensure the SQLite DB is released")]
         private void BackgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            if (Directory.Exists(this.targetTextBox.Text) && File.Exists(this.gpxFilenameTextBox.Text))
+            string targetDrive = e.Argument.ToString();
+
+            if (Directory.Exists(targetDrive) && File.Exists(this.gpxFilenameTextBox.Text))
             {
                 // Load existing POIs
                 buildDatabaseBackgroundWorker.ReportProgress(1, "Loading existing POIs");
-                Collection<PointOfInterestCategory> currentPois = new Collection<PointOfInterestCategory>();
-                if (PointOfInterestDatabase.Exists(this.targetTextBox.Text))
-                {
-                    currentPois = PointOfInterestDatabase.GetCategories(this.targetTextBox.Text);
-
-                    foreach (PointOfInterestCategory currentCategory in currentPois)
-                    {
-                        currentCategory.Items.AddRange(
-                        PointOfInterestDatabase.GetPointsOfInterest(this.targetTextBox.Text, currentCategory));
-                    }
-                }
+                Collection<PointOfInterestCategory> currentPois = PointOfInterestDatabase.LoadPois(targetDrive);
 
                 buildDatabaseBackgroundWorker.ReportProgress(2, "Load GPX POIs");
                 Collection<PointOfInterestCategory> gpxPois = ProcessGpxFile(this.gpxFilenameTextBox.Text, "mcaddy", true);
 
-                Collection<PointOfInterestCategory> pointsOfInterest = MergePointsOfInterest(currentPois, gpxPois);
+                buildDatabaseBackgroundWorker.ReportProgress(3, "Merging new POIs");
+                Collection<PointOfInterestCategory> pointsOfInterest = PointOfInterestDatabase.MergePointsOfInterest(currentPois, gpxPois);
 
-                buildDatabaseBackgroundWorker.ReportProgress(3, "Building Database");
-                PointOfInterestDatabase.BuildStaticContent(this.targetTextBox.Text, pointsOfInterest);
-                int loadedWaypoints = 0;
-
-                string databaseLocation = PointOfInterestDatabase.Build(this.targetTextBox.Text);
-
-                loadedWaypoints = PointOfInterestDatabase.Populate(databaseLocation, pointsOfInterest, this.buildDatabaseBackgroundWorker);
-
-                GC.Collect();
-
-                PointOfInterestDatabase.CompleteDatabase(this.targetTextBox.Text);
+                buildDatabaseBackgroundWorker.ReportProgress(4, "Building Database");
+                int loadedWaypoints = PointOfInterestDatabase.SavePois(pointsOfInterest, targetDrive, this.buildDatabaseBackgroundWorker);
 
                 e.Result = loadedWaypoints;
             }
@@ -314,9 +269,14 @@ namespace Mcaddy.Audi
             this.processButton.Enabled = true;
         }
 
-        private void TargetFolderLabel_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Handle the form load event
+        /// </summary>
+        /// <param name="sender">the Sender argument</param>
+        /// <param name="e">the Event Arguments argument</param>
+        private void MainForm_Load(object sender, EventArgs e)
         {
-
+            this.BindDriveList();
         }
     }
 }

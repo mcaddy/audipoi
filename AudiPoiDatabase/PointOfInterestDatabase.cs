@@ -14,6 +14,7 @@ namespace Mcaddy.AudiPoiDatabase
     using System.Drawing;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
     using System.Xml.Linq;
@@ -29,6 +30,90 @@ namespace Mcaddy.AudiPoiDatabase
         /// </summary>
         private PointOfInterestDatabase()
         {
+        }
+
+        /// <summary>
+        /// Load POIs from the referenced drive
+        /// </summary>
+        /// <param name="sourceDrive">The source to load from</param>
+        /// <returns>A collection of POI categories</returns>
+        public static Collection<PointOfInterestCategory> LoadPois(string sourceDrive)
+        {
+            Collection<PointOfInterestCategory> currentPois = new Collection<PointOfInterestCategory>();
+            if (PointOfInterestDatabase.Exists(sourceDrive))
+            {
+                currentPois = PointOfInterestDatabase.GetCategories(sourceDrive);
+
+                foreach (PointOfInterestCategory currentCategory in currentPois)
+                {
+                    currentCategory.Items.AddRange(
+                    PointOfInterestDatabase.GetPointsOfInterest(sourceDrive, currentCategory));
+                }
+            }
+
+            GC.Collect();
+
+            return currentPois;
+        }
+
+        /// <summary>
+        /// Save the referenced POIs to the target drive
+        /// </summary>
+        /// <param name="pointsOfInterest">The POIs to save</param>
+        /// <param name="targetDrive">The Drive to Save the POIs to</param>
+        /// <param name="backgroundWorker">instance of a background worker to update, null if not required</param>
+        /// <returns>The number of POIs saved to the Drive</returns>
+        public static int SavePois(Collection<PointOfInterestCategory> pointsOfInterest, string targetDrive, BackgroundWorker backgroundWorker)
+        {
+            int loadedWaypoints = 0;
+            PointOfInterestDatabase.BuildStaticContent(targetDrive, pointsOfInterest);
+
+            string databaseLocation = PointOfInterestDatabase.BuildEmptyDatabase(targetDrive);
+
+            loadedWaypoints = PointOfInterestDatabase.Populate(databaseLocation, pointsOfInterest, backgroundWorker);
+
+            GC.Collect();
+
+            PointOfInterestDatabase.CompleteDatabase(targetDrive);
+
+            return loadedWaypoints;
+        }
+
+        /// <summary>
+        /// Merge Two lists of POI Categories
+        /// </summary>
+        /// <param name="currentPois">Current POI Categories</param>
+        /// <param name="newPois">New Categories</param>
+        /// <returns>A Merged list of Categories</returns>
+        public static Collection<PointOfInterestCategory> MergePointsOfInterest(Collection<PointOfInterestCategory> currentPois, Collection<PointOfInterestCategory> newPois)
+        {
+            Collection<PointOfInterestCategory> output = new Collection<PointOfInterestCategory>();
+
+            // Add the existing POIs that arn't in the New file
+            foreach (PointOfInterestCategory currentPoiCategory in currentPois)
+            {
+                // Search for an existing category matching the GPX category, 
+                if (newPois.Where(x => x.Name.Equals(currentPoiCategory.Name)).SingleOrDefault() == null)
+                {
+                    output.Add(currentPoiCategory);
+                }
+            }
+
+            // Add the New categories
+            foreach (PointOfInterestCategory newPoiCategory in newPois)
+            {
+                output.Add(newPoiCategory);
+            }
+
+            // Renumber
+            int counter = 1;
+            foreach (PointOfInterestCategory outputCategory in output)
+            {
+                outputCategory.Id = counter;
+                counter++;
+            }
+
+            return output;
         }
 
         /// <summary>
@@ -201,9 +286,9 @@ namespace Mcaddy.AudiPoiDatabase
                             Latitude = reader.GetDouble(latOrdinal), 
                             Longitude = reader.GetDouble(lonOrdinal),
                             Name = reader.GetString(nameOrdinal),
-                            HouseNumber = reader.GetString(houseNrOrdinal),
-                            Street = reader.GetString(streetOrdinal),
-                            City = reader.GetString(cityOrdinal),
+                            HouseNumber = reader.IsDBNull(houseNrOrdinal) ? string.Empty : reader.GetString(houseNrOrdinal),
+                            Street = reader.IsDBNull(streetOrdinal) ? string.Empty : reader.GetString(streetOrdinal),
+                            City = reader.IsDBNull(cityOrdinal) ? string.Empty : reader.GetString(cityOrdinal),
                         });
                     }
                 }
@@ -217,10 +302,17 @@ namespace Mcaddy.AudiPoiDatabase
         /// </summary>
         /// <param name="rootPath">Target path</param>
         /// <returns>the open connection</returns>
-        public static string Build(string rootPath)
+        public static string BuildEmptyDatabase(string rootPath)
         {
             string databaseLocation = string.Format(Resources.DataFilePath, rootPath, "poidata.db");
+
             Directory.CreateDirectory(Path.GetDirectoryName(databaseLocation));
+
+            if (File.Exists(databaseLocation))
+            {
+                File.Delete(databaseLocation);
+            }
+            
             SQLiteConnection.CreateFile(databaseLocation);
             using (SQLiteConnection databaseConnection = new SQLiteConnection(string.Format("Data Source={0};Version=3;", databaseLocation)))
             {
@@ -295,8 +387,10 @@ namespace Mcaddy.AudiPoiDatabase
         private static Bitmap GetImage(XElement element, string rootPath)
         {
             string[] imageElements = element.Value.Split(new char[] { ',' });
-
-            return new Bitmap(string.Format(Resources.DataFilePath, rootPath, imageElements[0].Replace(@"/", @"\")));
+            using (Bitmap bitmap = new Bitmap(string.Format(Resources.DataFilePath, rootPath, imageElements[0].Replace(@"/", @"\"))))
+            {
+                return new Bitmap(bitmap);
+            }
         }
 
         /// <summary>

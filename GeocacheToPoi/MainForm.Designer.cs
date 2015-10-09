@@ -38,11 +38,10 @@
             this.gpxFileLabel = new System.Windows.Forms.Label();
             this.gpxFilenameTextBox = new System.Windows.Forms.TextBox();
             this.targetFolderLabel = new System.Windows.Forms.Label();
-            this.targetTextBox = new System.Windows.Forms.TextBox();
-            this.targetFolderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.processButton = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.buildDatabaseBackgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.targetDriveComboBox = new System.Windows.Forms.ComboBox();
             this.mainMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -83,7 +82,6 @@
             this.selectTargetFolderToolStripMenuItem.Name = "selectTargetFolderToolStripMenuItem";
             this.selectTargetFolderToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
             this.selectTargetFolderToolStripMenuItem.Text = "Select Target Folder";
-            this.selectTargetFolderToolStripMenuItem.Click += new System.EventHandler(this.SelectTargetFolderToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
@@ -123,16 +121,6 @@
             this.targetFolderLabel.Size = new System.Drawing.Size(41, 13);
             this.targetFolderLabel.TabIndex = 3;
             this.targetFolderLabel.Text = "Target:";
-            this.targetFolderLabel.Click += new System.EventHandler(this.TargetFolderLabel_Click);
-            // 
-            // targetTextBox
-            // 
-            this.targetTextBox.Location = new System.Drawing.Point(70, 75);
-            this.targetTextBox.Name = "targetTextBox";
-            this.targetTextBox.ReadOnly = true;
-            this.targetTextBox.Size = new System.Drawing.Size(141, 20);
-            this.targetTextBox.TabIndex = 4;
-            this.targetTextBox.Text = "C:\\SDCard";
             // 
             // processButton
             // 
@@ -158,14 +146,22 @@
             this.buildDatabaseBackgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorker1_ProgressChanged);
             this.buildDatabaseBackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1_RunWorkerCompleted);
             // 
+            // targetDriveComboBox
+            // 
+            this.targetDriveComboBox.FormattingEnabled = true;
+            this.targetDriveComboBox.Location = new System.Drawing.Point(70, 75);
+            this.targetDriveComboBox.Name = "targetDriveComboBox";
+            this.targetDriveComboBox.Size = new System.Drawing.Size(121, 21);
+            this.targetDriveComboBox.TabIndex = 7;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(570, 195);
+            this.Controls.Add(this.targetDriveComboBox);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.processButton);
-            this.Controls.Add(this.targetTextBox);
             this.Controls.Add(this.targetFolderLabel);
             this.Controls.Add(this.gpxFilenameTextBox);
             this.Controls.Add(this.gpxFileLabel);
@@ -173,6 +169,7 @@
             this.MainMenuStrip = this.mainMenuStrip;
             this.Name = "MainForm";
             this.Text = "Audi POI Builder";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -192,11 +189,10 @@
         private System.Windows.Forms.ToolStripMenuItem selectTargetFolderToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.Label targetFolderLabel;
-        private System.Windows.Forms.TextBox targetTextBox;
-        private System.Windows.Forms.FolderBrowserDialog targetFolderBrowserDialog;
         private System.Windows.Forms.Button processButton;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.ComponentModel.BackgroundWorker buildDatabaseBackgroundWorker;
+        private System.Windows.Forms.ComboBox targetDriveComboBox;
     }
 }
 

@@ -16,7 +16,7 @@ namespace Mcaddy.AudiPoiDatabase
         /// <summary>
         /// Initializes a new instance of the <see cref="PointOfInterestCategory"/> class.
         /// </summary>
-        /// <param name="id">If for new POI Category</param>
+        /// <param name="id">Id for new POI Category</param>
         /// <param name="name">name for new POI Category</param>
         /// <param name="icon">Icon for new POI Category</param>
         public PointOfInterestCategory(int id, string name, Bitmap icon)

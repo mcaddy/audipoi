@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeocacheToPoi", "GeocacheToPoi\GeocacheToPoi.csproj", "{A0BB16B4-79B3-4232-9D06-E56301394325}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedCameraToPoi", "SpeedCameraToPoi\SpeedCameraToPoi.csproj", "{F76D366B-0B0E-46CF-B58E-B8747D7DDD4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketGpsWorld", "PocketGpsWorld\PocketGpsWorld.csproj", "{8317B549-6985-41EE-B06C-81F90E351960}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{A0BB16B4-79B3-4232-9D06-E56301394325}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0BB16B4-79B3-4232-9D06-E56301394325}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0BB16B4-79B3-4232-9D06-E56301394325}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F76D366B-0B0E-46CF-B58E-B8747D7DDD4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F76D366B-0B0E-46CF-B58E-B8747D7DDD4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F76D366B-0B0E-46CF-B58E-B8747D7DDD4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F76D366B-0B0E-46CF-B58E-B8747D7DDD4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8317B549-6985-41EE-B06C-81F90E351960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8317B549-6985-41EE-B06C-81F90E351960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8317B549-6985-41EE-B06C-81F90E351960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8317B549-6985-41EE-B06C-81F90E351960}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
