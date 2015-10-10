@@ -6,13 +6,17 @@
 
 namespace SpeedCameraToPoi
 {
+    using System;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
     using System.IO;
+    using System.Net;
     using System.Windows;
     using System.Windows.Input;
+    using Mcaddy;
     using Mcaddy.AudiPoiDatabase;
     using PocketGpsWorld;
+    using System.Security;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -70,6 +74,24 @@ namespace SpeedCameraToPoi
         {
             if (!this.buildDatabaseBackgroundWorker.IsBusy)
             {
+                if (string.IsNullOrEmpty(this.usernameTextBox.Text))
+                {
+                    MessageBox.Show(Properties.Resources.UsernameError, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(this.passwordBox.Password))
+                {
+                    MessageBox.Show(Properties.Resources.PasswordError, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    return;
+                }
+
+                if (this.targetDriveComboBox.SelectedValue == null)
+                {
+                    MessageBox.Show(Properties.Resources.TargetDriveError, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    return;
+                }
+
                 this.Cursor = Cursors.Wait;
                 this.processButton.IsEnabled = false;
 
@@ -86,7 +108,6 @@ namespace SpeedCameraToPoi
                 };
 
                 this.buildDatabaseBackgroundWorker.RunWorkerAsync(settings);
-                processButton.Content = "Cancel";
             }
         }
 
@@ -104,9 +125,23 @@ namespace SpeedCameraToPoi
             {
                 // Load POIs from PocketGPSWorld
                 this.buildDatabaseBackgroundWorker.ReportProgress(1, "Loading Cameras from PocketGPSWorld.com");
-                byte[] camerasZip = SpeedCameras.Load(settings.Username, settings.Password);
-                Collection<PointOfInterestCategory> cameras = SpeedCameras.Filter(SpeedCameras.SortCameras(SpeedCameras.UnpackCameras(camerasZip)), settings);
-
+                Collection<PointOfInterestCategory> cameras;
+                try
+                {
+                    byte[] camerasZip = SpeedCameras.Load(settings.Username, settings.Password);
+                    cameras = SpeedCameras.Filter(SpeedCameras.SortCameras(SpeedCameras.UnpackCameras(camerasZip)), settings);
+                }
+                catch (WebException webException)
+                {
+                    MessageBox.Show(webException.Message, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    return;
+                }
+                catch (FileFormatException fileFormatException)
+                {
+                    MessageBox.Show(fileFormatException.Message, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    return;
+                }
+                
                 // Load existing POIs from card
                 this.buildDatabaseBackgroundWorker.ReportProgress(2, "Load existing POIs from Card");
                 Collection<PointOfInterestCategory> existingCategories = PointOfInterestDatabase.LoadPois(settings.TargertDrive);
@@ -150,14 +185,18 @@ namespace SpeedCameraToPoi
         /// <param name="sender">Sender Argument</param>
         /// <param name="e">Event Argument</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1300:SpecifyMessageBoxOptions", Justification = "Our messagebox won't be right reading")]
-        private void BackgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            this.progressBar.Value = 100;
-            if ((int)e.Result >= 0)
+            if (e.Result != null && (int)e.Result >= 0)
             {
                 MessageBox.Show(
                     string.Format(Properties.Resources.CompletionFormatString, e.Result),
                     Properties.Resources.CompletionTitle);
+                this.progressBar.Value = 100;
+            }
+            else
+            {
+                this.progressBar.Value = 0;
             }
 
             this.processButton.IsEnabled = true;
@@ -173,6 +212,49 @@ namespace SpeedCameraToPoi
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             this.BindDriveList();
+            Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            this.Title += string.Format(" (v{0}.{1}.{2}.{3})", version.Major,version.Minor, version.Build, version.MinorRevision);
+            LoadSettings();
+        }
+
+        /// <summary>
+        /// Load the Application settings
+        /// </summary>
+        private void LoadSettings()
+        {
+            usernameTextBox.Text = Properties.Settings.Default.PocketGpsWorldUsername;
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.PocketGpsWorldPassword))
+            {
+                // passwordBox.Password = SecureStrings.ToInsecureString(SecureStrings.DecryptString(Properties.Settings.Default.PocketGpsWorldPassword));
+            }
+            yesRadioButton.IsChecked = Properties.Settings.Default.IncludeUnverifiedCameras;
+            fixedCheckBox.IsChecked = Properties.Settings.Default.IncludeFixedCameras;
+            mobileCheckBox.IsChecked = Properties.Settings.Default.IncludeMobileCameras;
+            specsCheckBox.IsChecked = Properties.Settings.Default.IncludeSpecsCameras;
+            redlightCheckBox.IsChecked = Properties.Settings.Default.IncludeRedlightCameras;
+            databaseFormatComboBox.SelectedItem = Properties.Settings.Default.DatabaseFormat;
+        }
+
+        /// <summary>
+        /// Save the Application settings
+        /// </summary>
+        private void SaveSettings()
+        {
+            Properties.Settings.Default.PocketGpsWorldUsername = usernameTextBox.Text;
+            //Properties.Settings.Default.PocketGpsWorldPassword = SecureStrings.EncryptString(SecureStrings.ToSecureString(passwordBox.Password));
+
+            Properties.Settings.Default.IncludeUnverifiedCameras = yesRadioButton.IsChecked.HasValue ? (bool)yesRadioButton.IsChecked : true;
+            Properties.Settings.Default.IncludeFixedCameras = fixedCheckBox.IsChecked.HasValue ? (bool)fixedCheckBox.IsChecked : true;
+            Properties.Settings.Default.IncludeMobileCameras = mobileCheckBox.IsChecked.HasValue ? (bool)mobileCheckBox.IsChecked : true;
+            Properties.Settings.Default.IncludeSpecsCameras = specsCheckBox.IsChecked.HasValue ? (bool)specsCheckBox.IsChecked : true;
+            Properties.Settings.Default.IncludeRedlightCameras = redlightCheckBox.IsChecked.HasValue ? (bool)redlightCheckBox.IsChecked : true;
+            Properties.Settings.Default.DatabaseFormat = databaseFormatComboBox.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            SaveSettings();
         }
     }
 }

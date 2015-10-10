@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpeedCameraToPoi"
         mc:Ignorable="d"
-        Title="VAG Speed Camera Importer" Height="402" Width="534" Loaded="Window_Loaded">
-    <Grid RenderTransformOrigin="0.5,0.5" Margin="0,0,0,9">
-        <Button x:Name="processButton" Content="Get Cameras" HorizontalAlignment="Left" Margin="10,282,0,0" VerticalAlignment="Top" Width="497" Click="ProcessButton_Click" Height="30"/>
-        <GroupBox x:Name="groupBox" Header="pocketgpsworld.com Credentials" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="105" Width="497">
-            <Grid>
+        Title="VAG Speed Camera POI Builder" Height="417" Width="496" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0">
+        <Button x:Name="processButton" Content="Get Cameras" HorizontalAlignment="Left" Margin="10,297,0,0" VerticalAlignment="Top" Width="460" Click="ProcessButton_Click" Height="30"/>
+        <GroupBox x:Name="groupBox" Header="pocketgpsworld.com Credentials" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="90" Width="460">
+            <Grid Margin="0,10,0,-2" HorizontalAlignment="Left" Width="485">
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -18,54 +18,60 @@
                     <ColumnDefinition Width="89*"/>
                     <ColumnDefinition Width="396*"/>
                 </Grid.ColumnDefinitions>
-                <Label x:Name="usernameLabel" Content="Username:" VerticalAlignment="Top" Margin="10,10,10,0" Height="26"/>
-                <TextBox x:Name="usernameTextBox" Height="23" Margin="10,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1"/>
-                <Label x:Name="passwordBoxLabel" Content="Password:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="26" Width="151" Grid.Row="1" Grid.ColumnSpan="2"/>
-                <PasswordBox x:Name="passwordBox" Margin="10,10,10,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Height="23"/>
+                <Label x:Name="usernameLabel" Content="Username:" VerticalAlignment="Top" Margin="20,-2,0,0" Height="26"/>
+                <TextBox x:Name="usernameTextBox" Height="23" Margin="10,0,221,0" TextWrapping="Wrap" VerticalAlignment="Top" Grid.Column="1"/>
+                <Label x:Name="passwordBoxLabel" Content="Password:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="22,28,0,0" Height="26" Width="68" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                <PasswordBox x:Name="passwordBox" Margin="10,0,221,0" VerticalAlignment="Top" Grid.Row="1" Grid.Column="1" Height="23"/>
             </Grid>
 
         </GroupBox>
-        <GroupBox x:Name="cameraTypesGroupBox" Header="Camera Types" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Height="150" Width="165">
-            <Grid Margin="-2,6,4,6" HorizontalAlignment="Right" VerticalAlignment="Center" Height="116" Width="151">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="15*"/>
-                    <RowDefinition Height="15*"/>
-                    <RowDefinition Height="15*"/>
-                    <RowDefinition Height="15*"/>
-                </Grid.RowDefinitions>
-                <CheckBox x:Name="fixedCheckBox" Content="Fixed" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="15" Width="150" IsChecked="True"/>
-                <CheckBox x:Name="mobileCheckBox" Content="Mobile" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Height="15" Width="150" Grid.Row="1" IsChecked="True"/>
-                <CheckBox x:Name="redlightCheckBox" Content="RedLight" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="2" VerticalAlignment="Top" Height="15" Width="150" IsChecked="True"/>
-                <CheckBox x:Name="specsCheckBox" Content="Specs" HorizontalAlignment="Left" Margin="10,5,0,0" Grid.Row="3" VerticalAlignment="Top" Height="15" Width="150" IsChecked="True"/>
-            </Grid>
-        </GroupBox>
 
-        <GroupBox x:Name="optionsGroupBox" Header="Options" HorizontalAlignment="Left" Margin="190,120,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.141,0" Height="100" Width="317">
-            <Grid HorizontalAlignment="Left" Height="55" Margin="25,10,-2,0" VerticalAlignment="Top" Width="282">
+        <GroupBox x:Name="optionsGroupBox" Header="Options" HorizontalAlignment="Left" Margin="10,104,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.141,0" Height="120" Width="460">
+            <Grid HorizontalAlignment="Left" Height="100" Margin="10,3,-2,0" VerticalAlignment="Top" Width="477">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="24*"/>
                     <RowDefinition Height="31*"/>
+                    <RowDefinition Height="31*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="184*"/>
-                    <ColumnDefinition Width="65*"/>
-                    <ColumnDefinition Width="65*"/>
+                    <ColumnDefinition Width="154*"/>
+                    <ColumnDefinition Width="55*"/>
+                    <ColumnDefinition Width="268*"/>
                 </Grid.ColumnDefinitions>
-                <Label x:Name="unverifiedLabel" Content="Include un-verified cameras" HorizontalAlignment="Left" Margin="0,4,0,0" VerticalAlignment="Top" Grid.Column="0" Height="25" Width="155" Grid.RowSpan="2" />
-                <RadioButton x:Name="yesRadioButton" Content="Yes" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" GroupName="IncludeUnverifed" IsChecked="True" Grid.Column="1" Height="25" Width="70" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                <RadioButton x:Name="noRadioButton" Content="No" HorizontalAlignment="Left" Margin="10,10,-21,0" VerticalAlignment="Top" GroupName="IncludeUnverifed" Grid.Column="2" Height="25" Width="70" Grid.RowSpan="2"/>
-                <Label x:Name="databaseFormatLabel" Content="Database Format" HorizontalAlignment="Left" Margin="53,7,0,-5" Grid.Row="1" Width="101"/>
-                <ComboBox x:Name="databaseFormatComboBox" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,-1" Grid.Row="1" VerticalAlignment="Top" Width="103" Height="22" SelectedIndex="0">
+                <Label x:Name="unverifiedLabel" Content="Include un-verified cameras:" HorizontalAlignment="Left" Margin="0,4,0,0" VerticalAlignment="Top" Grid.Column="0" Height="25" Width="155" Grid.RowSpan="2" Grid.ColumnSpan="2" />
+                <RadioButton x:Name="yesRadioButton" Content="Yes" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" GroupName="IncludeUnverifed" IsChecked="True" Grid.Column="1" Height="25" Width="70" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
+                <RadioButton x:Name="noRadioButton" Content="No" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" GroupName="IncludeUnverifed" Grid.Column="2" Height="25" Width="70" Grid.RowSpan="2"/>
+                <Label x:Name="databaseFormatLabel" Content="Database Format:" HorizontalAlignment="Left" Margin="53,6,0,29" Grid.Row="1" Width="101" Grid.RowSpan="2"/>
+                <ComboBox x:Name="databaseFormatComboBox" Grid.Column="1" HorizontalAlignment="Left" Margin="10,8,0,0" Grid.Row="1" VerticalAlignment="Top" Width="103" Height="22" SelectedIndex="0" Grid.ColumnSpan="2">
                     <ListBoxItem Content="Audi A3 8VS" IsSelected="True"/>
                     <ListBoxItem Content="Skoda Columbus" IsEnabled="False"/>
                     <ListBoxItem Content="VW Discover Pro" IsEnabled="False"/>
                 </ComboBox>
+                <Grid Grid.Row="2" Grid.ColumnSpan="3" Margin="0,6,-3,2" HorizontalAlignment="Right" VerticalAlignment="Center" Height="28" Width="327">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="66*"/>
+                        <ColumnDefinition Width="70*"/>
+                        <ColumnDefinition Width="83*"/>
+                        <ColumnDefinition Width="108*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="fixedCheckBox" Content="Fixed" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="15" Width="150" Grid.Column="0" IsChecked="True" Grid.ColumnSpan="3"/>
+                    <CheckBox x:Name="mobileCheckBox" Content="Mobile" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Height="15" Width="150" Grid.Column="1" IsChecked="True" Grid.ColumnSpan="3"/>
+                    <CheckBox x:Name="redlightCheckBox" Content="RedLight" HorizontalAlignment="Left" Margin="10,0,0,0" Grid.Column="2" VerticalAlignment="Top" Height="15" Width="150" IsChecked="True" Grid.ColumnSpan="2"/>
+                    <CheckBox x:Name="specsCheckBox" Content="Specs" HorizontalAlignment="Left" Margin="10,0,-52,0" Grid.Column="3" VerticalAlignment="Top" Height="15" Width="150" IsChecked="True"/>
+                </Grid>
+                <Label x:Name="label" Content="Camera Types" HorizontalAlignment="Left" Margin="69,0,0,0" VerticalAlignment="Top" Grid.Row="2" Width="85"/>
             </Grid>
         </GroupBox>
-        <GroupBox x:Name="targetDriveGroupBox" Header="Target Drive:" HorizontalAlignment="Left" Margin="190,220,0,0" VerticalAlignment="Top" Height="50" Width="155">
-            <ComboBox x:Name="targetDriveComboBox" HorizontalAlignment="Left" Margin="6,3,0,0" VerticalAlignment="Top" Width="131" Height="25"/>
+        <GroupBox x:Name="targetDriveGroupBox" Header="Target" HorizontalAlignment="Left" Margin="10,228,0,0" VerticalAlignment="Top" Height="57" Width="460">
+            <Grid HorizontalAlignment="Left" Height="25" Margin="0,5,0,0" VerticalAlignment="Top" Width="215">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="15*"/>
+                    <ColumnDefinition Width="28*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="label1" Content="Drive Letter:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="74" Margin="0,0,0,-1"/>
+                <ComboBox x:Name="targetDriveComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="131" Height="25" Grid.Column="1"/>
+            </Grid>
         </GroupBox>
-        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="25" Margin="10,327,0,0" VerticalAlignment="Top" Width="497"/>
-
+        <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="25" Margin="10,344,0,0" VerticalAlignment="Top" Width="460"/>
     </Grid>
 </Window>

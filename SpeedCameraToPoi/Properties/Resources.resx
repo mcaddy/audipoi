@@ -129,5 +129,13 @@
   <data name="FileNotFoundError" xml:space="preserve">
     <value>Soruce or destination invalid</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="PasswordError" xml:space="preserve">
+    <value>Password not entered</value>
+  </data>
+  <data name="TargetDriveError" xml:space="preserve">
+    <value>Target drive not selected</value>
+  </data>
+  <data name="UsernameError" xml:space="preserve">
+    <value>Username not entered</value>
+  </data>
 </root>

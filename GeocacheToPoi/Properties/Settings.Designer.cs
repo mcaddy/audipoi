@@ -22,5 +22,41 @@ namespace Mcaddy.GeocacheToPoi.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GeocachingUsername {
+            get {
+                return ((string)(this["GeocachingUsername"]));
+            }
+            set {
+                this["GeocachingUsername"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ExcludeFound {
+            get {
+                return ((bool)(this["ExcludeFound"]));
+            }
+            set {
+                this["ExcludeFound"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ExcludeOwned {
+            get {
+                return ((bool)(this["ExcludeOwned"]));
+            }
+            set {
+                this["ExcludeOwned"] = value;
+            }
+        }
     }
 }

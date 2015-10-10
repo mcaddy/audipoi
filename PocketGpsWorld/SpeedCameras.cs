@@ -30,6 +30,7 @@ namespace PocketGpsWorld
         /// <param name="username">PocketGpsWorld username</param>
         /// <param name="password">PocketGpsWorld password</param>
         /// <returns>the latest bundle of cameras</returns>
+        /// <exception cref="WebException">Thrown if unable to login, browse to or download the file</exception>
         public static byte[] Load(string username, string password)
         {
             string loginAddress = "http://www.pocketgpsworld.com/modules.php?name=Your_Account";
@@ -44,7 +45,20 @@ namespace PocketGpsWorld
             values.Add("op", "login");
 
             // Logging in
-            client.UploadValues(loginAddress, values);
+            string loggedInPage = Encoding.ASCII.GetString(client.UploadValues(loginAddress, values));
+
+            // Check for a positive logon error.
+            if (loggedInPage.Contains("Login Incorrect!"))
+            {
+                throw new WebException("Unable to logon to PocketGpsWorld.com, check your username and password");
+            }
+
+            // Check to see the download link exisits, failing this check is the first indicator 
+            // that someting has changed on the PocketGpsWorld website
+            if (!loggedInPage.Contains("<a href=\"/modules.php?name=Cameras\" class=\"sidemenu\">Download Speed Cams</a>"))
+            {
+                throw new WebException("Unable to find download link at PocketGPSworld.com, Please report error 1000 to developer");
+            }
 
             string downloadAddress = "http://www.pocketgpsworld.com/modules.php?name=Cameras";
             NameValueCollection postData = new NameValueCollection
@@ -64,8 +78,10 @@ namespace PocketGpsWorld
             {
                 return client.DownloadData(match.Groups[1].Value);
             }
-
-            return null;
+            else
+            {
+                throw new WebException("Unable to find download link at PocketGPSworld.com, Please report error 1010 to developer");
+            }
         }
 
         /// <summary>
@@ -77,35 +93,46 @@ namespace PocketGpsWorld
         {
             List<PointOfInterest> unsortedCameras = new List<PointOfInterest>();
 
-            using (MemoryStream ms = new MemoryStream(camerasZip))
+            try
             {
-                using (ZipArchive archive = new ZipArchive(ms))
+                using (MemoryStream ms = new MemoryStream(camerasZip))
                 {
-                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    using (ZipArchive archive = new ZipArchive(ms))
                     {
-                        if (entry.FullName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+                        foreach (ZipArchiveEntry entry in archive.Entries)
                         {
-                            StreamReader streamReader = new StreamReader(entry.Open());
-                            string csv = streamReader.ReadToEnd();
-
-                            string[] csvLines = csv.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                            foreach (string csvLine in csvLines)
+                            if (entry.FullName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
                             {
-                                string[] csvEntry = csvLine.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                                StreamReader streamReader = new StreamReader(entry.Open());
+                                string csv = streamReader.ReadToEnd();
 
-                                string name = csvEntry[2].Replace("\"", string.Empty);
-                                if (!name.Equals("Name") && !name.Equals("Copyright PocketGPSWorld.com"))
+                                string[] csvLines = csv.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                                foreach (string csvLine in csvLines)
                                 {
-                                    PointOfInterest camera = new PointOfInterest();
-                                    camera.Latitude = double.Parse(csvEntry[0]);
-                                    camera.Longitude = double.Parse(csvEntry[1]);
-                                    camera.Name = name;
-                                    unsortedCameras.Add(camera);
+                                    string[] csvEntry = csvLine.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
+                                    string name = csvEntry[2].Replace("\"", string.Empty);
+
+                                    // We need to skip the title line and the last line of the file
+                                    if (!name.Equals("Name") && !name.Equals("Copyright PocketGPSWorld.com"))
+                                    {
+                                        unsortedCameras.Add(
+                                            new PointOfInterest()
+                                            {
+                                                Longitude = double.Parse(csvEntry[0]),
+                                                Latitude = double.Parse(csvEntry[1]),
+                                                Name = name
+                                            });
+                                    }
                                 }
                             }
                         }
                     }
                 }
+            }
+            catch (Exception)
+            {
+                throw new FileFormatException("Something went wrong with unpacking the Cameras Zip file, Please report error 2000 to developer");
             }
 
             return unsortedCameras;

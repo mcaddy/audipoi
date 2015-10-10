@@ -95,5 +95,32 @@ namespace SpeedCameraToPoi.Properties {
                 return ResourceManager.GetString("FileNotFoundError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password not entered.
+        /// </summary>
+        internal static string PasswordError {
+            get {
+                return ResourceManager.GetString("PasswordError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target drive not selected.
+        /// </summary>
+        internal static string TargetDriveError {
+            get {
+                return ResourceManager.GetString("TargetDriveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username not entered.
+        /// </summary>
+        internal static string UsernameError {
+            get {
+                return ResourceManager.GetString("UsernameError", resourceCulture);
+            }
+        }
     }
 }

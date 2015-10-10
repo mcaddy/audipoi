@@ -28,13 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.openSourceFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectSourceGpxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectTargetFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gpxFileLabel = new System.Windows.Forms.Label();
             this.gpxFilenameTextBox = new System.Windows.Forms.TextBox();
             this.targetFolderLabel = new System.Windows.Forms.Label();
@@ -42,63 +37,23 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.buildDatabaseBackgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.targetDriveComboBox = new System.Windows.Forms.ComboBox();
-            this.mainMenuStrip.SuspendLayout();
+            this.selectSourceGPX = new System.Windows.Forms.Button();
+            this.geocachingUsernameTextBox = new System.Windows.Forms.TextBox();
+            this.excludeOwnedCachesCheckBox = new System.Windows.Forms.CheckBox();
+            this.excludeFoundCachesCheckBox = new System.Windows.Forms.CheckBox();
+            this.optionsGroupBox = new System.Windows.Forms.GroupBox();
+            this.geocachingUsernameLabel = new System.Windows.Forms.Label();
+            this.sourceGroupBox = new System.Windows.Forms.GroupBox();
+            this.targetGroupBox = new System.Windows.Forms.GroupBox();
+            this.optionsGroupBox.SuspendLayout();
+            this.sourceGroupBox.SuspendLayout();
+            this.targetGroupBox.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // openSourceFileDialog
-            // 
-            this.openSourceFileDialog.FileName = "openFileDialog";
-            // 
-            // mainMenuStrip
-            // 
-            this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
-            this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
-            this.mainMenuStrip.Name = "mainMenuStrip";
-            this.mainMenuStrip.Size = new System.Drawing.Size(570, 24);
-            this.mainMenuStrip.TabIndex = 0;
-            this.mainMenuStrip.Text = "menuStrip1";
-            // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectSourceGpxToolStripMenuItem,
-            this.selectTargetFolderToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // selectSourceGpxToolStripMenuItem
-            // 
-            this.selectSourceGpxToolStripMenuItem.Name = "selectSourceGpxToolStripMenuItem";
-            this.selectSourceGpxToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.selectSourceGpxToolStripMenuItem.Text = "Select Source Gpx";
-            this.selectSourceGpxToolStripMenuItem.Click += new System.EventHandler(this.SelectSourceGpxToolStripMenuItem_Click);
-            // 
-            // selectTargetFolderToolStripMenuItem
-            // 
-            this.selectTargetFolderToolStripMenuItem.Name = "selectTargetFolderToolStripMenuItem";
-            this.selectTargetFolderToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.selectTargetFolderToolStripMenuItem.Text = "Select Target Folder";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(174, 6);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // gpxFileLabel
             // 
             this.gpxFileLabel.AutoSize = true;
-            this.gpxFileLabel.Location = new System.Drawing.Point(12, 39);
+            this.gpxFileLabel.Location = new System.Drawing.Point(8, 23);
             this.gpxFileLabel.Name = "gpxFileLabel";
             this.gpxFileLabel.Size = new System.Drawing.Size(51, 13);
             this.gpxFileLabel.TabIndex = 1;
@@ -106,93 +61,179 @@
             // 
             // gpxFilenameTextBox
             // 
-            this.gpxFilenameTextBox.Location = new System.Drawing.Point(70, 36);
+            this.gpxFilenameTextBox.Location = new System.Drawing.Point(63, 20);
             this.gpxFilenameTextBox.Name = "gpxFilenameTextBox";
             this.gpxFilenameTextBox.ReadOnly = true;
-            this.gpxFilenameTextBox.Size = new System.Drawing.Size(264, 20);
+            this.gpxFilenameTextBox.Size = new System.Drawing.Size(228, 20);
             this.gpxFilenameTextBox.TabIndex = 2;
             this.gpxFilenameTextBox.Text = "C:\\Users\\mike\\Documents\\waypoints.gpx";
             // 
             // targetFolderLabel
             // 
             this.targetFolderLabel.AutoSize = true;
-            this.targetFolderLabel.Location = new System.Drawing.Point(22, 78);
+            this.targetFolderLabel.Location = new System.Drawing.Point(9, 27);
             this.targetFolderLabel.Name = "targetFolderLabel";
-            this.targetFolderLabel.Size = new System.Drawing.Size(41, 13);
+            this.targetFolderLabel.Size = new System.Drawing.Size(65, 13);
             this.targetFolderLabel.TabIndex = 3;
-            this.targetFolderLabel.Text = "Target:";
+            this.targetFolderLabel.Text = "Drive Letter:";
             // 
             // processButton
             // 
-            this.processButton.Location = new System.Drawing.Point(70, 113);
+            this.processButton.Location = new System.Drawing.Point(15, 215);
             this.processButton.Name = "processButton";
-            this.processButton.Size = new System.Drawing.Size(476, 23);
+            this.processButton.Size = new System.Drawing.Size(394, 23);
             this.processButton.TabIndex = 5;
             this.processButton.Text = "Process";
             this.processButton.UseVisualStyleBackColor = true;
-            this.processButton.Click += new System.EventHandler(this.Button1_Click);
+            this.processButton.Click += new System.EventHandler(this.ProcessButton_Click);
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(70, 151);
+            this.progressBar.Location = new System.Drawing.Point(15, 248);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(476, 23);
+            this.progressBar.Size = new System.Drawing.Size(394, 23);
             this.progressBar.TabIndex = 6;
             // 
             // buildDatabaseBackgroundWorker
             // 
             this.buildDatabaseBackgroundWorker.WorkerReportsProgress = true;
-            this.buildDatabaseBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1_DoWork);
-            this.buildDatabaseBackgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BackgroundWorker1_ProgressChanged);
-            this.buildDatabaseBackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1_RunWorkerCompleted);
+            this.buildDatabaseBackgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BuildDatabaseBackgroundWorker_DoWork);
+            this.buildDatabaseBackgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BuildDatabaseBackgroundWorker_ProgressChanged);
+            this.buildDatabaseBackgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BuildDatabaseBackgroundWorker_RunWorkerCompleted);
             // 
             // targetDriveComboBox
             // 
             this.targetDriveComboBox.FormattingEnabled = true;
-            this.targetDriveComboBox.Location = new System.Drawing.Point(70, 75);
+            this.targetDriveComboBox.Location = new System.Drawing.Point(81, 23);
             this.targetDriveComboBox.Name = "targetDriveComboBox";
             this.targetDriveComboBox.Size = new System.Drawing.Size(121, 21);
             this.targetDriveComboBox.TabIndex = 7;
+            // 
+            // selectSourceGPX
+            // 
+            this.selectSourceGPX.Location = new System.Drawing.Point(302, 19);
+            this.selectSourceGPX.Name = "selectSourceGPX";
+            this.selectSourceGPX.Size = new System.Drawing.Size(85, 23);
+            this.selectSourceGPX.TabIndex = 8;
+            this.selectSourceGPX.Text = "Select Source";
+            this.selectSourceGPX.UseVisualStyleBackColor = true;
+            this.selectSourceGPX.Click += new System.EventHandler(this.SelectSourceGPX_Click);
+            // 
+            // geocachingUsernameTextBox
+            // 
+            this.geocachingUsernameTextBox.Location = new System.Drawing.Point(156, 16);
+            this.geocachingUsernameTextBox.Name = "geocachingUsernameTextBox";
+            this.geocachingUsernameTextBox.Size = new System.Drawing.Size(100, 20);
+            this.geocachingUsernameTextBox.TabIndex = 10;
+            // 
+            // excludeOwnedCachesCheckBox
+            // 
+            this.excludeOwnedCachesCheckBox.AutoSize = true;
+            this.excludeOwnedCachesCheckBox.Location = new System.Drawing.Point(14, 45);
+            this.excludeOwnedCachesCheckBox.Name = "excludeOwnedCachesCheckBox";
+            this.excludeOwnedCachesCheckBox.Size = new System.Drawing.Size(137, 17);
+            this.excludeOwnedCachesCheckBox.TabIndex = 11;
+            this.excludeOwnedCachesCheckBox.Text = "Exclude owned caches";
+            this.excludeOwnedCachesCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // excludeFoundCachesCheckBox
+            // 
+            this.excludeFoundCachesCheckBox.AutoSize = true;
+            this.excludeFoundCachesCheckBox.Location = new System.Drawing.Point(158, 45);
+            this.excludeFoundCachesCheckBox.Name = "excludeFoundCachesCheckBox";
+            this.excludeFoundCachesCheckBox.Size = new System.Drawing.Size(132, 17);
+            this.excludeFoundCachesCheckBox.TabIndex = 12;
+            this.excludeFoundCachesCheckBox.Text = "Exclude found caches";
+            this.excludeFoundCachesCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // optionsGroupBox
+            // 
+            this.optionsGroupBox.Controls.Add(this.geocachingUsernameLabel);
+            this.optionsGroupBox.Controls.Add(this.excludeFoundCachesCheckBox);
+            this.optionsGroupBox.Controls.Add(this.geocachingUsernameTextBox);
+            this.optionsGroupBox.Controls.Add(this.excludeOwnedCachesCheckBox);
+            this.optionsGroupBox.Location = new System.Drawing.Point(15, 71);
+            this.optionsGroupBox.Name = "optionsGroupBox";
+            this.optionsGroupBox.Size = new System.Drawing.Size(394, 73);
+            this.optionsGroupBox.TabIndex = 13;
+            this.optionsGroupBox.TabStop = false;
+            this.optionsGroupBox.Text = "Options";
+            // 
+            // geocachingUsernameLabel
+            // 
+            this.geocachingUsernameLabel.AutoSize = true;
+            this.geocachingUsernameLabel.Location = new System.Drawing.Point(10, 19);
+            this.geocachingUsernameLabel.Name = "geocachingUsernameLabel";
+            this.geocachingUsernameLabel.Size = new System.Drawing.Size(140, 13);
+            this.geocachingUsernameLabel.TabIndex = 11;
+            this.geocachingUsernameLabel.Text = "Geocaching.com username:";
+            // 
+            // sourceGroupBox
+            // 
+            this.sourceGroupBox.Controls.Add(this.gpxFileLabel);
+            this.sourceGroupBox.Controls.Add(this.gpxFilenameTextBox);
+            this.sourceGroupBox.Controls.Add(this.selectSourceGPX);
+            this.sourceGroupBox.Location = new System.Drawing.Point(12, 11);
+            this.sourceGroupBox.Name = "sourceGroupBox";
+            this.sourceGroupBox.Size = new System.Drawing.Size(397, 54);
+            this.sourceGroupBox.TabIndex = 14;
+            this.sourceGroupBox.TabStop = false;
+            this.sourceGroupBox.Text = "Source";
+            // 
+            // targetGroupBox
+            // 
+            this.targetGroupBox.Controls.Add(this.targetDriveComboBox);
+            this.targetGroupBox.Controls.Add(this.targetFolderLabel);
+            this.targetGroupBox.Location = new System.Drawing.Point(15, 151);
+            this.targetGroupBox.Name = "targetGroupBox";
+            this.targetGroupBox.Size = new System.Drawing.Size(394, 54);
+            this.targetGroupBox.TabIndex = 15;
+            this.targetGroupBox.TabStop = false;
+            this.targetGroupBox.Text = "Target";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(570, 195);
-            this.Controls.Add(this.targetDriveComboBox);
+            this.ClientSize = new System.Drawing.Size(418, 283);
+            this.Controls.Add(this.targetGroupBox);
+            this.Controls.Add(this.sourceGroupBox);
+            this.Controls.Add(this.optionsGroupBox);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.processButton);
-            this.Controls.Add(this.targetFolderLabel);
-            this.Controls.Add(this.gpxFilenameTextBox);
-            this.Controls.Add(this.gpxFileLabel);
-            this.Controls.Add(this.mainMenuStrip);
-            this.MainMenuStrip = this.mainMenuStrip;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "Audi POI Builder";
+            this.Text = "Geocaching POI Builder";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.mainMenuStrip.ResumeLayout(false);
-            this.mainMenuStrip.PerformLayout();
+            this.optionsGroupBox.ResumeLayout(false);
+            this.optionsGroupBox.PerformLayout();
+            this.sourceGroupBox.ResumeLayout(false);
+            this.sourceGroupBox.PerformLayout();
+            this.targetGroupBox.ResumeLayout(false);
+            this.targetGroupBox.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.OpenFileDialog openSourceFileDialog;
-        private System.Windows.Forms.MenuStrip mainMenuStrip;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem selectSourceGpxToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.Label gpxFileLabel;
         private System.Windows.Forms.TextBox gpxFilenameTextBox;
-        private System.Windows.Forms.ToolStripMenuItem selectTargetFolderToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.Label targetFolderLabel;
         private System.Windows.Forms.Button processButton;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.ComponentModel.BackgroundWorker buildDatabaseBackgroundWorker;
         private System.Windows.Forms.ComboBox targetDriveComboBox;
+        private System.Windows.Forms.Button selectSourceGPX;
+        private System.Windows.Forms.TextBox geocachingUsernameTextBox;
+        private System.Windows.Forms.CheckBox excludeOwnedCachesCheckBox;
+        private System.Windows.Forms.CheckBox excludeFoundCachesCheckBox;
+        private System.Windows.Forms.GroupBox optionsGroupBox;
+        private System.Windows.Forms.Label geocachingUsernameLabel;
+        private System.Windows.Forms.GroupBox sourceGroupBox;
+        private System.Windows.Forms.GroupBox targetGroupBox;
     }
 }
 

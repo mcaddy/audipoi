@@ -36,6 +36,7 @@ namespace Mcaddy.Audi
         /// <param name="skipOwner">skip caches owned by</param>
         /// <param name="skipFound">skip found caches</param>
         /// <returns>A Point of Interest Database</returns>
+        /// <exception cref="InvalidDataException">Thrown if unable to select the relevant elements from the GPX file</exception>
         private static Collection<PointOfInterestCategory> ProcessGpxFile(string sourceFile, string skipOwner, bool skipFound)
         {
             Collection<PointOfInterestCategory> pois = new Collection<PointOfInterestCategory>();
@@ -66,23 +67,23 @@ namespace Mcaddy.Audi
             foreach (XmlNode waypoint in waypoints)
             {
                 string type = waypoint.SelectSingleNode("gpx:type", namespaceManager).InnerText;
-                List<string> bits = new List<string>(type.Split(new char[] { '|' }));
+                List<string> attributes = new List<string>(type.Split(new char[] { '|' }));
 
                 // We don't want include child waypoints
-                if (bits.Remove("Geocache"))
+                if (attributes.Remove("Geocache"))
                 {
                     // Skip caches that have been found 
-                    if (skipFound && bits.Contains("Found"))
+                    if (skipFound && attributes.Contains("Found"))
                     {
                         continue;
                     }
                     else
                     {
-                        bits.Remove("Found");
+                        attributes.Remove("Found");
                     }
 
                     PointOfInterestCategory waypointCategory = null;
-                    if (bits.Count.Equals(1) && categories.TryGetValue(bits[0], out waypointCategory))
+                    if (attributes.Count.Equals(1) && categories.TryGetValue(attributes[0], out waypointCategory))
                     {
                         string code = waypoint.SelectSingleNode("gpx:name", namespaceManager).InnerText;
                         string name = waypoint.SelectSingleNode("groundspeak:cache/groundspeak:name", namespaceManager).InnerText;
@@ -144,19 +145,6 @@ namespace Mcaddy.Audi
         }
 
         /// <summary>
-        /// Handle the Select Source Click event
-        /// </summary>
-        /// <param name="sender">Sender Argument</param>
-        /// <param name="e">Event Argument</param>
-        private void SelectSourceGpxToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (this.openSourceFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                this.gpxFilenameTextBox.Text = this.openSourceFileDialog.FileName;
-            }
-        }
-
-        /// <summary>
         /// Bind the Drive list
         /// </summary>
         private void BindDriveList()
@@ -176,25 +164,20 @@ namespace Mcaddy.Audi
                 targetDriveComboBox.SelectedIndex = 0;
             }
         }
-
-        /// <summary>
-        /// Exit Click event handler
-        /// </summary>
-        /// <param name="sender">Sender Argument</param>
-        /// <param name="e">Event Argument</param>
-        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
+        
         /// <summary>
         /// Process Button Click Event handler
         /// </summary>
         /// <param name="sender">Sender Argument</param>
         /// <param name="e">Event Argument</param>
-        private void Button1_Click(object sender, EventArgs e)
+        private void ProcessButton_Click(object sender, EventArgs e)
         {
-            this.buildDatabaseBackgroundWorker.RunWorkerAsync(this.targetDriveComboBox.SelectedItem);
+            Tuple<string, string, bool> settings = new Tuple<string, string, bool>(
+            this.targetDriveComboBox.SelectedItem.ToString(),
+            this.excludeOwnedCachesCheckBox.Checked ? this.geocachingUsernameTextBox.Text : string.Empty,
+            this.excludeFoundCachesCheckBox.Checked);
+
+            this.buildDatabaseBackgroundWorker.RunWorkerAsync(settings);
             this.processButton.Enabled = false;
         }
 
@@ -203,25 +186,24 @@ namespace Mcaddy.Audi
         /// </summary>
         /// <param name="sender">Sender Argument</param>
         /// <param name="e">Event Argument</param>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect", Justification = "Required to ensure the SQLite DB is released")]
-        private void BackgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void BuildDatabaseBackgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            string targetDrive = e.Argument.ToString();
+            Tuple<string, string, bool> settings = (Tuple<string, string, bool>)e.Argument;
 
-            if (Directory.Exists(targetDrive) && File.Exists(this.gpxFilenameTextBox.Text))
+            if (Directory.Exists(settings.Item1) && File.Exists(this.gpxFilenameTextBox.Text))
             {
                 // Load existing POIs
                 buildDatabaseBackgroundWorker.ReportProgress(1, "Loading existing POIs");
-                Collection<PointOfInterestCategory> currentPois = PointOfInterestDatabase.LoadPois(targetDrive);
+                Collection<PointOfInterestCategory> currentPois = PointOfInterestDatabase.LoadPois(settings.Item1);
 
-                buildDatabaseBackgroundWorker.ReportProgress(2, "Load GPX POIs");
-                Collection<PointOfInterestCategory> gpxPois = ProcessGpxFile(this.gpxFilenameTextBox.Text, "mcaddy", true);
+                buildDatabaseBackgroundWorker.ReportProgress(2, "Loading GPX POIs");
+                Collection<PointOfInterestCategory> gpxPois = ProcessGpxFile(this.gpxFilenameTextBox.Text, settings.Item2, settings.Item3);
 
                 buildDatabaseBackgroundWorker.ReportProgress(3, "Merging new POIs");
                 Collection<PointOfInterestCategory> pointsOfInterest = PointOfInterestDatabase.MergePointsOfInterest(currentPois, gpxPois);
 
                 buildDatabaseBackgroundWorker.ReportProgress(4, "Building Database");
-                int loadedWaypoints = PointOfInterestDatabase.SavePois(pointsOfInterest, targetDrive, this.buildDatabaseBackgroundWorker);
+                int loadedWaypoints = PointOfInterestDatabase.SavePois(pointsOfInterest, settings.Item1, this.buildDatabaseBackgroundWorker);
 
                 e.Result = loadedWaypoints;
             }
@@ -243,7 +225,7 @@ namespace Mcaddy.Audi
         /// </summary>
         /// <param name="sender">Sender Argument</param>
         /// <param name="e">Event Argument</param>
-        private void BackgroundWorker1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        private void BuildDatabaseBackgroundWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             this.progressBar.Value = e.ProgressPercentage;
             this.processButton.Text = e.UserState.ToString();
@@ -255,7 +237,7 @@ namespace Mcaddy.Audi
         /// <param name="sender">Sender Argument</param>
         /// <param name="e">Event Argument</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1300:SpecifyMessageBoxOptions", Justification = "Our messagebox won't be right reading")]
-        private void BackgroundWorker1_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private void BuildDatabaseBackgroundWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             this.progressBar.Value = 100;
             if ((int)e.Result >= 0)
@@ -277,6 +259,52 @@ namespace Mcaddy.Audi
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.BindDriveList();
+            this.Text += string.Format(" (v{0})", Application.ProductVersion);
+            this.LoadSettings();
+        }
+
+        /// <summary>
+        /// Load the settings
+        /// </summary>
+        private void LoadSettings()
+        {
+            geocachingUsernameTextBox.Text = Settings.Default.GeocachingUsername;
+            excludeFoundCachesCheckBox.Checked = Settings.Default.ExcludeFound;
+            excludeOwnedCachesCheckBox.Checked = Settings.Default.ExcludeOwned;
+        }
+
+        /// <summary>
+        /// Save the settings
+        /// </summary>
+        private void SaveSettings()
+        {
+            Settings.Default.GeocachingUsername = geocachingUsernameTextBox.Text;
+            Settings.Default.ExcludeFound = excludeFoundCachesCheckBox.Checked;
+            Settings.Default.ExcludeOwned = excludeOwnedCachesCheckBox.Checked;
+            Settings.Default.Save();
+        }
+
+        /// <summary>
+        /// Handle the Select Source Click event
+        /// </summary>
+        /// <param name="sender">Sender Argument</param>
+        /// <param name="e">Event Argument</param>
+        private void SelectSourceGPX_Click(object sender, EventArgs e)
+        {
+            if (this.openSourceFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                this.gpxFilenameTextBox.Text = this.openSourceFileDialog.FileName;
+            }
+        }
+
+        /// <summary>
+        /// Handle the Form Closing event
+        /// </summary>
+        /// <param name="sender">Sender Argument</param>
+        /// <param name="e">Event Argument</param>
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.SaveSettings();
         }
     }
 }

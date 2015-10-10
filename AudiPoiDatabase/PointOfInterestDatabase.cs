@@ -72,8 +72,6 @@ namespace Mcaddy.AudiPoiDatabase
 
             loadedWaypoints = PointOfInterestDatabase.Populate(databaseLocation, pointsOfInterest, backgroundWorker);
 
-            GC.Collect();
-
             PointOfInterestDatabase.CompleteDatabase(targetDrive);
 
             return loadedWaypoints;
@@ -270,26 +268,27 @@ namespace Mcaddy.AudiPoiDatabase
                 {
                     command.Parameters.Add(new SQLiteParameter("category", DbType.Int32) { Value = category.Id });
 
-                    SQLiteDataReader reader = command.ExecuteReader();
-                    
-                    int latOrdinal = reader.GetOrdinal("lat");
-                    int lonOrdinal = reader.GetOrdinal("lon");
-                    int nameOrdinal = reader.GetOrdinal("name");
-                    int houseNrOrdinal = reader.GetOrdinal("housenr");
-                    int streetOrdinal = reader.GetOrdinal("street");
-                    int cityOrdinal = reader.GetOrdinal("city");
-
-                    while (reader.Read())
+                    using (SQLiteDataReader reader = command.ExecuteReader())
                     {
-                        pointsOfInterest.Add(new PointOfInterest()
-                        { 
-                            Latitude = reader.GetDouble(latOrdinal), 
-                            Longitude = reader.GetDouble(lonOrdinal),
-                            Name = reader.GetString(nameOrdinal),
-                            HouseNumber = reader.IsDBNull(houseNrOrdinal) ? string.Empty : reader.GetString(houseNrOrdinal),
-                            Street = reader.IsDBNull(streetOrdinal) ? string.Empty : reader.GetString(streetOrdinal),
-                            City = reader.IsDBNull(cityOrdinal) ? string.Empty : reader.GetString(cityOrdinal),
-                        });
+                        int latOrdinal = reader.GetOrdinal("lat");
+                        int lonOrdinal = reader.GetOrdinal("lon");
+                        int nameOrdinal = reader.GetOrdinal("name");
+                        int houseNrOrdinal = reader.GetOrdinal("housenr");
+                        int streetOrdinal = reader.GetOrdinal("street");
+                        int cityOrdinal = reader.GetOrdinal("city");
+
+                        while (reader.Read())
+                        {
+                            pointsOfInterest.Add(new PointOfInterest()
+                            {
+                                Latitude = reader.GetDouble(latOrdinal),
+                                Longitude = reader.GetDouble(lonOrdinal),
+                                Name = reader.GetString(nameOrdinal),
+                                HouseNumber = reader.IsDBNull(houseNrOrdinal) ? string.Empty : reader.GetString(houseNrOrdinal),
+                                Street = reader.IsDBNull(streetOrdinal) ? string.Empty : reader.GetString(streetOrdinal),
+                                City = reader.IsDBNull(cityOrdinal) ? string.Empty : reader.GetString(cityOrdinal),
+                            });
+                        }
                     }
                 }
             }
