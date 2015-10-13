@@ -11,6 +11,8 @@ Currently the app will group cameras into 5 categories:-
 
 Latest version - v0.9 - https://github.com/mcaddy/audipoi/blob/master/Releases/SpeedCameraToPoi/v0.9.zip?raw=true
 
+To install unpack the contents of the zip file into a folder of your choice and run SpeedCameraToPoi.exe
+
 ## GeocacheToPoi
 
 This application takes a GPX file of Geocaches and builds a POI database, if present it will retain the database already on the target drive, replacing the Geocache categories if present.
