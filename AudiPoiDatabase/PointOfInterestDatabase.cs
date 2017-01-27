@@ -263,7 +263,7 @@ namespace Mcaddy.AudiPoiDatabase
             {
                 connection.Open();
                 using (SQLiteCommand command = new SQLiteCommand(
-                    "SELECT latmin + (latmax - latmin / 2) as lat, lonmin + (lonmax - lonmin / 2) as lon, city, street, housenr, name FROM poicoord JOIN poidata ON poicoord.poiid = poidata.poiid JOIN poiname on poiname.docid = poicoord.poiid WHERE type = @category",
+                    "SELECT latmin + (latmax - latmin) / 2 as lat, lonmin + (lonmax - lonmin) / 2 as lon, city, street, housenr, name FROM poicoord JOIN poidata ON poicoord.poiid = poidata.poiid JOIN poiname on poiname.docid = poicoord.poiid WHERE type = @category",
                     connection))
                 {
                     command.Parameters.Add(new SQLiteParameter("category", DbType.Int32) { Value = category.Id });
