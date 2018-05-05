@@ -9,7 +9,7 @@ Currently the app will group cameras into 5 categories:-
 * Specs - Average Speed cameras
 * RedLight - Traffic Light cameras (some of which double up as speed cameras)
 
-Latest version - v0.9 - https://github.com/mcaddy/audipoi/blob/master/Releases/SpeedCameraToPoi/v0.9.zip?raw=true
+Latest version - v0.9.1 - https://github.com/mcaddy/audipoi/blob/master/Releases/SpeedCameraToPoi/v0.9.1.zip?raw=true
 
 To install unpack the contents of the zip file into a folder of your choice and run SpeedCameraToPoi.exe
 
