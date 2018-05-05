@@ -33,7 +33,7 @@ namespace PocketGpsWorld
         /// <exception cref="WebException">Thrown if unable to login, browse to or download the file</exception>
         public static byte[] Load(string username, string password)
         {
-            string loginAddress = "http://www.pocketgpsworld.com/modules.php?name=Your_Account";
+            string loginAddress = "https://www.pocketgpsworld.com/modules.php?name=Your_Account";
 
             var client = new CookieAwareWebClient();
             client.Encoding = Encoding.UTF8;
@@ -60,7 +60,7 @@ namespace PocketGpsWorld
                 throw new WebException("Unable to find download link at PocketGPSworld.com, Please report error 1000 to developer");
             }
 
-            string downloadAddress = "http://www.pocketgpsworld.com/modules.php?name=Cameras";
+            string downloadAddress = "https://www.pocketgpsworld.com/modules.php?name=Cameras";
             NameValueCollection postData = new NameValueCollection
             {
               { "op", "DownloadPackage" },
