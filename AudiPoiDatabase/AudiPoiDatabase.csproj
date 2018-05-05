@@ -37,7 +37,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>AudiPoiDatabase.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Mike Caddy.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -77,6 +77,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="AudiPoiDatabase.snk" />
+    <None Include="Mike Caddy.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

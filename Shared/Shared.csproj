@@ -34,7 +34,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Shared.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Mike Caddy.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,6 +54,7 @@
     <Compile Include="SecureStrings.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Mike Caddy.pfx" />
     <None Include="Shared.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
