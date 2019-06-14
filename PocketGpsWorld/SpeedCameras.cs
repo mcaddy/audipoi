@@ -55,6 +55,12 @@ namespace PocketGpsWorld
                 throw new WebException("Unable to logon to PocketGpsWorld.com, check your username and password");
             }
 
+            // Check for not a subscriber message
+            if (loggedInPage.Contains("not subscriber"))
+            {
+                throw new WebException("PocketGPSworld.com reports your not a current Subscriber, If this is incorrect, please report error 1020 to developer");
+            }
+
             // Check to see the download link exisits, failing this check is the first indicator 
             // that someting has changed on the PocketGpsWorld website
             if (!loggedInPage.Contains("<a href=\"/modules.php?name=Cameras\" class=\"sidemenu\">Download Speed Cams</a>"))
