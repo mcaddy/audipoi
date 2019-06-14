@@ -79,16 +79,6 @@ namespace Mcaddy.GeocacheToPoi.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap earthcacheIcon {
-            get {
-                object obj = ResourceManager.GetObject("earthcacheIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string ErrorTitle {
@@ -103,76 +93,6 @@ namespace Mcaddy.GeocacheToPoi.Properties {
         internal static string FileNotFoundError {
             get {
                 return ResourceManager.GetString("FileNotFoundError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap letterboxIcon {
-            get {
-                object obj = ResourceManager.GetObject("letterboxIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap multiIcon {
-            get {
-                object obj = ResourceManager.GetObject("multiIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mysteryIcon {
-            get {
-                object obj = ResourceManager.GetObject("mysteryIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap traditionalIcon {
-            get {
-                object obj = ResourceManager.GetObject("traditionalIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap virtualIcon {
-            get {
-                object obj = ResourceManager.GetObject("virtualIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap webcamIcon {
-            get {
-                object obj = ResourceManager.GetObject("webcamIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap wherigoIcon {
-            get {
-                object obj = ResourceManager.GetObject("wherigoIcon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }
