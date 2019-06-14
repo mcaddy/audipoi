@@ -115,7 +115,7 @@ namespace Mcaddy.AudiPoiDatabase
         }
 
         /// <summary>
-        /// Populate the database from a Geocache GPX file
+        /// Populate the database from a Collection of POIs
         /// </summary>
         /// <param name="databaseLocation">The database to update</param>
         /// <param name="pointsOfInterest">Points of interest to load</param>

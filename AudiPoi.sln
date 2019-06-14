@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AudiPoiDatabase", "AudiPoiDatabase\AudiPoiDatabase.csproj", "{CFD0425C-CBCC-45C5-9009-B5D025826FE2}"
 EndProject
@@ -12,6 +12,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedCameraToPoi", "SpeedCameraToPoi\SpeedCameraToPoi.csproj", "{F76D366B-0B0E-46CF-B58E-B8747D7DDD4D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketGpsWorld", "PocketGpsWorld\PocketGpsWorld.csproj", "{8317B549-6985-41EE-B06C-81F90E351960}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Double", "Double\Double.csproj", "{8F11CFCB-CC10-4D73-A1B4-A193EA0DC3E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geocaching", "Geocaching\Geocaching.csproj", "{DBCA422B-F0C4-4AAD-A678-B89802A53BF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{8317B549-6985-41EE-B06C-81F90E351960}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8317B549-6985-41EE-B06C-81F90E351960}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8317B549-6985-41EE-B06C-81F90E351960}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F11CFCB-CC10-4D73-A1B4-A193EA0DC3E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F11CFCB-CC10-4D73-A1B4-A193EA0DC3E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F11CFCB-CC10-4D73-A1B4-A193EA0DC3E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F11CFCB-CC10-4D73-A1B4-A193EA0DC3E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBCA422B-F0C4-4AAD-A678-B89802A53BF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBCA422B-F0C4-4AAD-A678-B89802A53BF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBCA422B-F0C4-4AAD-A678-B89802A53BF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBCA422B-F0C4-4AAD-A678-B89802A53BF9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

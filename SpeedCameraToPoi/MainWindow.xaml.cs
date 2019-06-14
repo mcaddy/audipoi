@@ -13,10 +13,8 @@ namespace SpeedCameraToPoi
     using System.Net;
     using System.Windows;
     using System.Windows.Input;
-    using Mcaddy;
     using Mcaddy.AudiPoiDatabase;
     using PocketGpsWorld;
-    using System.Security;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -213,8 +211,8 @@ namespace SpeedCameraToPoi
         {
             this.BindDriveList();
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
-            this.Title += string.Format(" (v{0}.{1}.{2}.{3})", version.Major,version.Minor, version.Build, version.MinorRevision);
-            LoadSettings();
+            this.Title += string.Format(" (v{0}.{1}.{2}.{3})", version.Major, version.Minor, version.Build, version.MinorRevision);
+            this.LoadSettings();
         }
 
         /// <summary>
@@ -227,6 +225,7 @@ namespace SpeedCameraToPoi
             {
                 // passwordBox.Password = SecureStrings.ToInsecureString(SecureStrings.DecryptString(Properties.Settings.Default.PocketGpsWorldPassword));
             }
+
             yesRadioButton.IsChecked = Properties.Settings.Default.IncludeUnverifiedCameras;
             fixedCheckBox.IsChecked = Properties.Settings.Default.IncludeFixedCameras;
             mobileCheckBox.IsChecked = Properties.Settings.Default.IncludeMobileCameras;
@@ -241,8 +240,8 @@ namespace SpeedCameraToPoi
         private void SaveSettings()
         {
             Properties.Settings.Default.PocketGpsWorldUsername = usernameTextBox.Text;
-            //Properties.Settings.Default.PocketGpsWorldPassword = SecureStrings.EncryptString(SecureStrings.ToSecureString(passwordBox.Password));
-
+            
+            // Properties.Settings.Default.PocketGpsWorldPassword = SecureStrings.EncryptString(SecureStrings.ToSecureString(passwordBox.Password));
             Properties.Settings.Default.IncludeUnverifiedCameras = yesRadioButton.IsChecked.HasValue ? (bool)yesRadioButton.IsChecked : true;
             Properties.Settings.Default.IncludeFixedCameras = fixedCheckBox.IsChecked.HasValue ? (bool)fixedCheckBox.IsChecked : true;
             Properties.Settings.Default.IncludeMobileCameras = mobileCheckBox.IsChecked.HasValue ? (bool)mobileCheckBox.IsChecked : true;
@@ -252,9 +251,14 @@ namespace SpeedCameraToPoi
             Properties.Settings.Default.Save();
         }
 
+        /// <summary>
+        /// On CLosing event
+        /// </summary>
+        /// <param name="sender">default sender</param>
+        /// <param name="e">default event arguments</param>
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            SaveSettings();
+            this.SaveSettings();
         }
     }
 }
