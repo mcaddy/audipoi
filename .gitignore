@@ -1,2 +1,7 @@
 *.suo
 packages/*
+Double
+obj
+bin
+StyleCop.Cache
+*.user
