@@ -44,6 +44,8 @@ namespace PocketGpsWorld
             values.Add("user_password", password);
             values.Add("op", "login");
 
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
             // Logging in
             string loggedInPage = Encoding.ASCII.GetString(client.UploadValues(loginAddress, values));
 
