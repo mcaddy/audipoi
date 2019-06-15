@@ -97,6 +97,8 @@ namespace PocketGpsWorld
         /// </summary>
         /// <param name="camerasZip">contents of the Zip file</param>
         /// <returns>List of Cameras</returns>
+        /// <exception cref="FileFormatException">Thrown for an invalid file format</exception>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Can't see where this is occuring?")]
         public static List<PointOfInterest> UnpackCameras(byte[] camerasZip)
         {
             List<PointOfInterest> unsortedCameras = new List<PointOfInterest>();
@@ -141,6 +143,11 @@ namespace PocketGpsWorld
             catch (Exception)
             {
                 throw new FileFormatException("Something went wrong with unpacking the Cameras Zip file, Please report error 2000 to developer");
+            }
+
+            if (unsortedCameras.Count.Equals(0))
+            {
+                throw new FileFormatException("Something went wrong with unpacking the Cameras Zip file, Please report error 2010 to developer");
             }
 
             return unsortedCameras;

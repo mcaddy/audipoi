@@ -19,12 +19,17 @@ namespace SpeedCameraToPoi
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         /// <summary>
         /// Background worker
         /// </summary>
         private BackgroundWorker buildDatabaseBackgroundWorker;
+
+        /// <summary>
+        /// In support of IDisposable Pattern
+        /// </summary>
+        private bool disposedValue = false; // To detect redundant calls
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class
@@ -41,7 +46,33 @@ namespace SpeedCameraToPoi
             this.buildDatabaseBackgroundWorker.RunWorkerCompleted +=
                 new RunWorkerCompletedEventHandler(this.BackgroundWorker1_RunWorkerCompleted);
         }
-        
+
+        /// <summary>
+        /// This code added to correctly implement the disposable pattern. 
+        /// </summary>
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) below.
+            this.Dispose(true);
+        }
+
+        /// <summary>
+        /// This code added to correctly implement the disposable pattern. 
+        /// </summary>
+        /// <param name="disposing">We are disposing</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    this.buildDatabaseBackgroundWorker.Dispose();
+                }
+
+                this.disposedValue = true;
+            }
+        }
+
         /// <summary>
         /// Bind the Drive List
         /// </summary>
@@ -123,35 +154,66 @@ namespace SpeedCameraToPoi
             {
                 // Load POIs from PocketGPSWorld
                 this.buildDatabaseBackgroundWorker.ReportProgress(1, "Loading Cameras from PocketGPSWorld.com");
-                Collection<PointOfInterestCategory> cameras;
+
+                byte[] camerasZip = null;
+
                 try
                 {
-                    byte[] camerasZip = SpeedCameras.Load(settings.Username, settings.Password);
-                    cameras = SpeedCameras.Filter(SpeedCameras.SortCameras(SpeedCameras.UnpackCameras(camerasZip)), settings);
+                    camerasZip = SpeedCameras.Load(settings.Username, settings.Password);
                 }
                 catch (WebException webException)
                 {
-                    MessageBox.Show(webException.Message, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    // Offer the user to build from manual download
+                    if (MessageBox.Show(webException.Message + "\r\r" + Properties.Resources.ManualDownloadPrompt, Properties.Resources.ErrorTitle, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes) == MessageBoxResult.Yes)
+                    {
+                        MessageBox.Show(Properties.Resources.ManualDownloadGuidance, Properties.Resources.ManualDownloadGuidanceTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                        Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
+                        fileDialog.DefaultExt = ".zip";
+                        fileDialog.Filter = "Zip Files|*.zip";
+                        bool? dialogResult = fileDialog.ShowDialog();
+                        if (dialogResult == true)
+                        {
+                            string filename = fileDialog.FileName;
+                            camerasZip = File.ReadAllBytes(filename);
+                        }
+                    }
+                }
+
+                if (camerasZip == null)
+                {
                     return;
+                }
+
+                Collection<PointOfInterestCategory> cameras = null;
+
+                try
+                {
+                    cameras = SpeedCameras.Filter(
+                        SpeedCameras.SortCameras(
+                        SpeedCameras.UnpackCameras(camerasZip)), 
+                        settings);
                 }
                 catch (FileFormatException fileFormatException)
                 {
                     MessageBox.Show(fileFormatException.Message, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
-                    return;
                 }
-                
-                // Load existing POIs from card
-                this.buildDatabaseBackgroundWorker.ReportProgress(2, "Load existing POIs from Card");
-                Collection<PointOfInterestCategory> existingCategories = PointOfInterestDatabase.LoadPois(settings.TargertDrive);
 
-                // We need to do a merge
-                Collection<PointOfInterestCategory> mergedPois = PointOfInterestDatabase.MergePointsOfInterest(existingCategories, cameras);
+                // Check we got some Cameras from the PocketGPSWorld
+                if (cameras != null && cameras.Count > 0)
+                {
+                    // Load existing POIs from card
+                    this.buildDatabaseBackgroundWorker.ReportProgress(2, "Load existing POIs from Card");
+                    Collection<PointOfInterestCategory> existingCategories = PointOfInterestDatabase.LoadPois(settings.TargertDrive);
 
-                // Build the SD card
-                this.buildDatabaseBackgroundWorker.ReportProgress(3, "Building Database");
-                int loadedWaypoints = PointOfInterestDatabase.SavePois(mergedPois, settings.TargertDrive, this.buildDatabaseBackgroundWorker);
+                    // We need to do a merge
+                    Collection<PointOfInterestCategory> mergedPois = PointOfInterestDatabase.MergePointsOfInterest(existingCategories, cameras);
 
-                e.Result = loadedWaypoints;
+                    // Build the SD card
+                    this.buildDatabaseBackgroundWorker.ReportProgress(3, "Building Database");
+                    int loadedWaypoints = PointOfInterestDatabase.SavePois(mergedPois, settings.TargertDrive, this.buildDatabaseBackgroundWorker);
+
+                    e.Result = loadedWaypoints;
+                }
             }
             else
             {
@@ -240,7 +302,7 @@ namespace SpeedCameraToPoi
         private void SaveSettings()
         {
             Properties.Settings.Default.PocketGpsWorldUsername = usernameTextBox.Text;
-            
+
             // Properties.Settings.Default.PocketGpsWorldPassword = SecureStrings.EncryptString(SecureStrings.ToSecureString(passwordBox.Password));
             Properties.Settings.Default.IncludeUnverifiedCameras = yesRadioButton.IsChecked.HasValue ? (bool)yesRadioButton.IsChecked : true;
             Properties.Settings.Default.IncludeFixedCameras = fixedCheckBox.IsChecked.HasValue ? (bool)fixedCheckBox.IsChecked : true;
@@ -252,7 +314,7 @@ namespace SpeedCameraToPoi
         }
 
         /// <summary>
-        /// On CLosing event
+        /// On Closing event
         /// </summary>
         /// <param name="sender">default sender</param>
         /// <param name="e">default event arguments</param>

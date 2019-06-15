@@ -97,6 +97,35 @@ namespace SpeedCameraToPoi.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log into PocketGPSWorld and browse to the Downloads section
+        ///
+        ///Select the &apos;Other - CSV&apos; and &apos;UK - Single file with all cameras&apos; options and click download to obtian the Camera POIs file.
+        /// </summary>
+        internal static string ManualDownloadGuidance {
+            get {
+                return ResourceManager.GetString("ManualDownloadGuidance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual Download.
+        /// </summary>
+        internal static string ManualDownloadGuidanceTitle {
+            get {
+                return ResourceManager.GetString("ManualDownloadGuidanceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Would you like to try building from a manually downloaded file?.
+        /// </summary>
+        internal static string ManualDownloadPrompt {
+            get {
+                return ResourceManager.GetString("ManualDownloadPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password not entered.
         /// </summary>
         internal static string PasswordError {

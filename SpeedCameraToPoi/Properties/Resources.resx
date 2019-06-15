@@ -129,6 +129,17 @@
   <data name="FileNotFoundError" xml:space="preserve">
     <value>Soruce or destination invalid</value>
   </data>
+  <data name="ManualDownloadGuidance" xml:space="preserve">
+    <value>Log into PocketGPSWorld and browse to the Downloads section
+
+Select the 'Other - CSV' and 'UK - Single file with all cameras' options and click download to obtian the Camera POIs file</value>
+  </data>
+  <data name="ManualDownloadGuidanceTitle" xml:space="preserve">
+    <value>Manual Download</value>
+  </data>
+  <data name="ManualDownloadPrompt" xml:space="preserve">
+    <value>Would you like to try building from a manually downloaded file?</value>
+  </data>
   <data name="PasswordError" xml:space="preserve">
     <value>Password not entered</value>
   </data>
