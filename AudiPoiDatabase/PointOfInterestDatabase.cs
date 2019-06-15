@@ -609,7 +609,7 @@ namespace Mcaddy.AudiPoiDatabase
         }
 
         /// <summary>
-        /// Build the Metainfo2.txt file
+        /// Build the MetaInfo2.txt file
         /// </summary>
         /// <param name="rootPath">Path to use as target</param>
         private static void BuildMetainfo2Txt(string rootPath)
