@@ -30,6 +30,6 @@ Currently the app will group caches by type, the following types will be created
 
 Optionally users can decide to exclude their own caches or found caches.
 
-Latest version - v0.9 - https://github.com/mcaddy/audipoi/blob/master/Releases/GeocacheToPoi/v0.9.zip?raw=true
+Latest version - [v0.9](https://github.com/mcaddy/audipoi/blob/master/Releases/GeocacheToPoi/v0.9.zip?raw=true)
 
 if you have features you'd like to see send me a mail
