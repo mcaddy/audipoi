@@ -1,8 +1,9 @@
 {
+  "AccountName": "mclogging",
+  "CategoriesFunctionPath": "https://poiloaderbackend.azurewebsites.net/api/Categories",
+  "CategoryImagesFunctionPath": "https://poiloaderbackend.azurewebsites.net/api/CategoryImages/{0}",
+  "Container": "csv",
   "GetAccessTokenFunctionPath": "https://mclogging.azurewebsites.net/api/GetAccessToken/{0}",
   "LogEventFunctionPath": "https://mclogging.azurewebsites.net/api/LogEvent/{0}/{1}",
-  "POIsFunctionPath": "https://poiloaderbackend.azurewebsites.net/api/POIs/{0}",
-  "CategoryImagesFunctionPath": "https://poiloaderbackend.azurewebsites.net/api/CategoryImages/{0}",
-  "AccountName": "mclogging",
-  "Container":  "csv"
+  "POIsFunctionPath": "https://poiloaderbackend.azurewebsites.net/api/POIs/{0}"
 }
