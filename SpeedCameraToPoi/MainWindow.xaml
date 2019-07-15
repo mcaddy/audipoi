@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SpeedCameraToPoi"
         mc:Ignorable="d"
-        Title="VAG Speed Camera POI Builder" Height="417" Width="496" Loaded="Window_Loaded" Closing="Window_Closing">
+        Title="VAG Speed Camera POI Builder" Height="417" Width="496" Loaded="Window_Loaded" Closing="Window_Closing" ContentRendered="Window_ContentRendered">
     <Grid RenderTransformOrigin="0.5,0.5" Margin="0,0,0,0">
         <Button x:Name="processButton" Content="Get Cameras" HorizontalAlignment="Left" Margin="10,297,0,0" VerticalAlignment="Top" Width="460" Click="ProcessButton_Click" Height="30"/>
         <GroupBox x:Name="groupBox" Header="pocketgpsworld.com Credentials" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="90" Width="460">
@@ -63,13 +63,15 @@
             </Grid>
         </GroupBox>
         <GroupBox x:Name="targetDriveGroupBox" Header="Target" HorizontalAlignment="Left" Margin="10,228,0,0" VerticalAlignment="Top" Height="57" Width="460">
-            <Grid HorizontalAlignment="Left" Height="25" Margin="0,5,0,0" VerticalAlignment="Top" Width="215">
+            <Grid HorizontalAlignment="Left" Height="25" Margin="0,5,0,0" VerticalAlignment="Top" Width="Auto">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="15*"/>
-                    <ColumnDefinition Width="28*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Label x:Name="label1" Content="Drive Letter:" HorizontalAlignment="Left" VerticalAlignment="Top" Height="26" Width="74" Margin="0,0,0,-1"/>
-                <ComboBox x:Name="targetDriveComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="131" Height="25" Grid.Column="1"/>
+                <ComboBox x:Name="targetDriveComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="231" Height="25" Grid.Column="1"/>
+                <Button x:Name="refreshButton" HorizontalAlignment="Left" VerticalAlignment="Top" Height="25" Width="55" Margin="10,0,0,0"  Grid.Column="2" Content="Refresh" Click="RefreshButton_Click" />
             </Grid>
         </GroupBox>
         <ProgressBar x:Name="progressBar" HorizontalAlignment="Left" Height="25" Margin="10,344,0,0" VerticalAlignment="Top" Width="460"/>

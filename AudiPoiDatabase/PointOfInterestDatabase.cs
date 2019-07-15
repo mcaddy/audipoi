@@ -65,12 +65,11 @@ namespace Mcaddy.AudiPoiDatabase
         /// <returns>The number of POIs saved to the Drive</returns>
         public static int SavePois(Collection<PointOfInterestCategory> pointsOfInterest, string targetDrive, BackgroundWorker backgroundWorker)
         {
-            int loadedWaypoints = 0;
             PointOfInterestDatabase.BuildStaticContent(targetDrive, pointsOfInterest);
 
             string databaseLocation = PointOfInterestDatabase.BuildEmptyDatabase(targetDrive);
 
-            loadedWaypoints = PointOfInterestDatabase.Populate(databaseLocation, pointsOfInterest, backgroundWorker);
+            int loadedWaypoints = PointOfInterestDatabase.Populate(databaseLocation, pointsOfInterest, backgroundWorker);
 
             PointOfInterestDatabase.CompleteDatabase(targetDrive);
 
@@ -214,7 +213,7 @@ namespace Mcaddy.AudiPoiDatabase
 
             XDocument categoriesPcDoc = XDocument.Load(string.Format(Resources.DataFilePath, rootPath, "categories.pc"));
             
-            // TODO get the default lanaguage file
+            // Set the default lanaguage file
             string defaultLanguageFilename = "strings_en-GB.xml";
             XDocument defaultLanguageDoc = XDocument.Load(string.Format(Resources.DataFilePath, rootPath, defaultLanguageFilename));
 
@@ -230,8 +229,7 @@ namespace Mcaddy.AudiPoiDatabase
             {
                 foreach (XElement category in categoriesNode.Descendants("category"))
                 {
-                    int id = 0;
-                    if (!int.TryParse(category.Attribute("id").Value, out id))
+                    if (!int.TryParse(category.Attribute("id").Value, out int id))
                     {
                         throw new InvalidCastException("id");
                     }
@@ -367,12 +365,13 @@ namespace Mcaddy.AudiPoiDatabase
                 command.ExecuteNonQuery();
 
                 // Unused fields in the poidata table - ccode, ntlimportance, exttype, extcont, warning, warnphon, namephon, zipcode, phone
-                command.CommandText = "INSERT INTO poidata (poiid, type, namephon, zipcode, city, street, housenr, phone) VALUES (@poiid, @category, 'namephon', 'zipcode', @city, @street, @housenr, 'phone')";
+                command.CommandText = "INSERT INTO poidata (poiid, type, namephon, zipcode, city, street, housenr, phone) VALUES (@poiid, @category, '', '', @city, @street, @housenr, @phone)";
                 command.Parameters.Add(new SQLiteParameter("poiid", DbType.Int32) { Value = poiId });
                 command.Parameters.Add(new SQLiteParameter("category", DbType.Int32) { Value = category.Id });
                 command.Parameters.Add(new SQLiteParameter("city", DbType.String) { Value = pointOfInterest.City });
                 command.Parameters.Add(new SQLiteParameter("street", DbType.String) { Value = pointOfInterest.Street });
                 command.Parameters.Add(new SQLiteParameter("housenr", DbType.String) { Value = pointOfInterest.HouseNumber });
+                command.Parameters.Add(new SQLiteParameter("phone", DbType.String) { Value = pointOfInterest.Phone });
                 command.ExecuteNonQuery();
             }
         }

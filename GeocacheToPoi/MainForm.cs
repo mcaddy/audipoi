@@ -7,6 +7,7 @@
 namespace Mcaddy.Audi
 {
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.IO;
     using System.Windows.Forms;
@@ -33,18 +34,23 @@ namespace Mcaddy.Audi
         /// <returns>true if the list contains entries</returns>
         private bool BindDriveList()
         {
-            targetDriveComboBox.Items.Clear();
             targetDriveComboBox.Text = string.Empty;
 
             DriveInfo[] allDrives = DriveInfo.GetDrives();
+
+            Dictionary<string, string> filterItems = new Dictionary<string, string>();
 
             foreach (DriveInfo d in allDrives)
             {
                 if (d.DriveType.Equals(DriveType.Removable))
                 {
-                    targetDriveComboBox.Items.Add(d.Name);
+                    filterItems.Add(d.Name, $"{d.Name} - {d.VolumeLabel} ({UIUtils.SizeSuffix(d.TotalSize, 1)})");
                 }
             }
+
+            this.targetDriveComboBox.DisplayMember = "Value";
+            this.targetDriveComboBox.ValueMember = "Key";
+            this.targetDriveComboBox.DataSource = new BindingSource(filterItems, null);
 
             if (targetDriveComboBox.Items.Count > 0)
             {
@@ -62,7 +68,7 @@ namespace Mcaddy.Audi
         private void ProcessButton_Click(object sender, EventArgs e)
         {
             Tuple<string, string, bool> settings = new Tuple<string, string, bool>(
-            this.targetDriveComboBox.SelectedItem.ToString(),
+            this.targetDriveComboBox.SelectedValue.ToString(),
             this.excludeOwnedCachesCheckBox.Checked ? this.geocachingUsernameTextBox.Text : string.Empty,
             this.excludeFoundCachesCheckBox.Checked);
 
@@ -131,9 +137,16 @@ namespace Mcaddy.Audi
             this.progressBar.Value = 100;
             if ((int)e.Result >= 0)
             {
-                MessageBox.Show(
+                if (Program.Auto)
+                {
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show(
                     string.Format(Resources.CompletionFormatString, e.Result),
                     Resources.CompletionTitle);
+                }
             }
 
             this.processButton.Text = "Process";
@@ -154,6 +167,18 @@ namespace Mcaddy.Audi
 
             this.Text += string.Format(" (v{0})", Application.ProductVersion);
             this.LoadSettings();
+
+            if (Program.Auto)
+            {
+                if (!string.IsNullOrEmpty(Program.GpxPath))
+                {
+                    gpxFilenameTextBox.Text = Program.GpxPath;
+                }
+
+                targetDriveComboBox.SelectedValue = Program.TargetDrive;
+
+                this.ProcessButton_Click(this.processButton, new EventArgs());
+            }
         }
 
         /// <summary>
@@ -164,6 +189,7 @@ namespace Mcaddy.Audi
             geocachingUsernameTextBox.Text = Settings.Default.GeocachingUsername;
             excludeFoundCachesCheckBox.Checked = Settings.Default.ExcludeFound;
             excludeOwnedCachesCheckBox.Checked = Settings.Default.ExcludeOwned;
+            gpxFilenameTextBox.Text = Settings.Default.GpxPath;
         }
 
         /// <summary>
@@ -174,6 +200,7 @@ namespace Mcaddy.Audi
             Settings.Default.GeocachingUsername = geocachingUsernameTextBox.Text;
             Settings.Default.ExcludeFound = excludeFoundCachesCheckBox.Checked;
             Settings.Default.ExcludeOwned = excludeOwnedCachesCheckBox.Checked;
+            Settings.Default.GpxPath = gpxFilenameTextBox.Text;
             Settings.Default.Save();
         }
 

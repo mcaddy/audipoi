@@ -5,3 +5,8 @@ obj
 bin
 StyleCop.Cache
 *.user
+*.ide-wal
+*.ide
+*.lock
+.vs/AudiPoi/DesignTimeBuild/.dtbcache
+*.ide-shm

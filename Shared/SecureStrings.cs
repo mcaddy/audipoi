@@ -64,17 +64,15 @@ namespace Mcaddy
         /// <returns>A secure string</returns>
         public static SecureString ToSecureString(string input)
         {
-            using (SecureString secure = new SecureString())
+            SecureString secure = new SecureString();
+            foreach (char c in input)
             {
-                foreach (char c in input)
-                {
-                    secure.AppendChar(c);
-                }
-
-                secure.MakeReadOnly();
-
-                return secure;
+                secure.AppendChar(c);
             }
+
+            secure.MakeReadOnly();
+
+            return secure;
         }
 
         /// <summary>

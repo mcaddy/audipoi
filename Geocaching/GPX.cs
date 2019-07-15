@@ -71,8 +71,7 @@ namespace Geocaching
                         attributes.Remove("Found");
                     }
 
-                    PointOfInterestCategory waypointCategory = null;
-                    if (attributes.Count.Equals(1) && categories.TryGetValue(attributes[0], out waypointCategory))
+                    if (attributes.Count.Equals(1) && categories.TryGetValue(attributes[0], out PointOfInterestCategory waypointCategory))
                     {
                         string code = waypoint.SelectSingleNode("gpx:name", namespaceManager).InnerText;
                         string name = waypoint.SelectSingleNode("groundspeak:cache/groundspeak:name", namespaceManager).InnerText;
@@ -86,25 +85,22 @@ namespace Geocaching
 
                         string size = waypoint.SelectSingleNode("groundspeak:cache/groundspeak:container", namespaceManager).InnerText;
 
-                        double lat, lon = 0;
-                        double difficulty, terrain = 0;
-
-                        if (!double.TryParse(waypoint.SelectSingleNode("@lat", namespaceManager).InnerText, out lat))
+                        if (!double.TryParse(waypoint.SelectSingleNode("@lat", namespaceManager).InnerText, out double lat))
                         {
                             throw new InvalidDataException(waypoint.SelectSingleNode("@lat", namespaceManager).InnerText);
                         }
 
-                        if (!double.TryParse(waypoint.SelectSingleNode("@lon", namespaceManager).InnerText, out lon))
+                        if (!double.TryParse(waypoint.SelectSingleNode("@lon", namespaceManager).InnerText, out double lon))
                         {
                             throw new InvalidDataException(waypoint.SelectSingleNode("@lon", namespaceManager).InnerText);
                         }
 
-                        if (!double.TryParse(waypoint.SelectSingleNode("groundspeak:cache/groundspeak:difficulty", namespaceManager).InnerText, out difficulty))
+                        if (!double.TryParse(waypoint.SelectSingleNode("groundspeak:cache/groundspeak:difficulty", namespaceManager).InnerText, out double difficulty))
                         {
                             throw new InvalidDataException(waypoint.SelectSingleNode("groundspeak:cache/groundspeak:difficulty", namespaceManager).InnerText);
                         }
 
-                        if (!double.TryParse(waypoint.SelectSingleNode("groundspeak:cache/groundspeak:terrain", namespaceManager).InnerText, out terrain))
+                        if (!double.TryParse(waypoint.SelectSingleNode("groundspeak:cache/groundspeak:terrain", namespaceManager).InnerText, out double terrain))
                         {
                             throw new InvalidDataException(waypoint.SelectSingleNode("groundspeak:cache/groundspeak:terrain", namespaceManager).InnerText);
                         }

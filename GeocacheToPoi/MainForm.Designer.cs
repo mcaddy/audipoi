@@ -69,7 +69,6 @@
             this.gpxFilenameTextBox.ReadOnly = true;
             this.gpxFilenameTextBox.Size = new System.Drawing.Size(452, 31);
             this.gpxFilenameTextBox.TabIndex = 2;
-            this.gpxFilenameTextBox.Text = "C:\\Users\\mike\\Documents\\waypoints.gpx";
             // 
             // targetFolderLabel
             // 

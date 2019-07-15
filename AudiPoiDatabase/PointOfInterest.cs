@@ -44,5 +44,10 @@ namespace Mcaddy.AudiPoiDatabase
         /// Gets or sets the City of the Poi
         /// </summary>
         public string City { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Phone of the Poi
+        /// </summary>
+        public string Phone { get; set; }
     }
 }

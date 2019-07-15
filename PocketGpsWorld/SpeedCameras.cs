@@ -18,6 +18,9 @@ namespace PocketGpsWorld
     using System.Text.RegularExpressions;
     using Mcaddy;
     using Mcaddy.AudiPoiDatabase;
+    using Microsoft.WindowsAzure.Storage;
+    using Microsoft.WindowsAzure.Storage.Auth;
+    using Microsoft.WindowsAzure.Storage.Blob;
 
     /// <summary>
     /// Speed Camera Class
@@ -35,14 +38,18 @@ namespace PocketGpsWorld
         {
             string loginAddress = "https://www.pocketgpsworld.com/modules.php?name=Your_Account";
 
-            var client = new CookieAwareWebClient();
-            client.Encoding = Encoding.UTF8;
+            var client = new CookieAwareWebClient
+            {
+                Encoding = Encoding.UTF8
+            };
 
             // Post values
-            var values = new NameValueCollection();
-            values.Add("username", username);
-            values.Add("user_password", password);
-            values.Add("op", "login");
+            var values = new NameValueCollection
+            {
+                { "username", username },
+                { "user_password", password },
+                { "op", "login" }
+            };
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
@@ -235,6 +242,50 @@ namespace PocketGpsWorld
             }
 
             return categorisedCameras;
+        }
+
+        /// <summary>
+        /// Upload a Cameras File for later inspection
+        /// </summary>
+        /// <param name="username">Username to record the zip against</param>
+        /// <param name="camerasZip">Zip file to store in the cloud</param>
+        public static async void UploadCameras(string username, byte[] camerasZip)
+        {
+            // Get an SAS token and path to Blob storage
+            Config configuration = new Config();
+
+            string path = string.Format(configuration.Get("GetAccessTokenFunctionPath"), username);
+            string accountName = configuration.Get("AccountName");
+            string containerName = configuration.Get("Container");
+
+            string accessToken = Azure.InvokeFunction(path, string.Empty);
+
+            // If we were issued a token attempt to upload the file to blob storage.
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                // Do upload to Azure Blob Storage
+                try
+                {
+                    // Create new storage credentials using the SAS token.
+                    StorageCredentials accountSAS = new StorageCredentials(accessToken);
+
+                    // Use these credentials and the account name to create a Blob service client.
+                    CloudStorageAccount accountWithSAS = new CloudStorageAccount(accountSAS, accountName, endpointSuffix: null, useHttps: true);
+                    CloudBlobClient blobClientWithSAS = accountWithSAS.CreateCloudBlobClient();
+
+                    CloudBlobContainer container = blobClientWithSAS.GetContainerReference(containerName);
+
+                    CloudBlockBlob blob = container.GetBlockBlobReference($"{DateTime.Now.ToString("yyyy-MM-dd_HH:mm:ss")}_{username}");
+                    await blob.UploadFromByteArrayAsync(camerasZip, 0, camerasZip.Length);
+                }
+                catch (Exception ex)
+                {
+                    LoggingClient logger = new LoggingClient(configuration);
+                    logger.Log(username, $"Exception in Upload Cameras - {ex.Message}");
+                }
+            }
+
+            return;
         }
 
         /// <summary>

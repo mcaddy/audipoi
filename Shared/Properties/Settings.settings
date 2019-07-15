@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Mcaddy.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="OnlineConfig" Type="System.String" Scope="User">
+      <Value Profile="(Default)">https://raw.githubusercontent.com/mcaddy/audipoi/master/Shared/config.json</Value>
+    </Setting>
+    <Setting Name="OfflineConfig" Type="System.String" Scope="User">
+      <Value Profile="(Default)">./config.json</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

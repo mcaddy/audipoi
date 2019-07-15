@@ -12,7 +12,9 @@ namespace SpeedCameraToPoi
     using System.IO;
     using System.Net;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Input;
+    using Mcaddy;
     using Mcaddy.AudiPoiDatabase;
     using PocketGpsWorld;
 
@@ -24,7 +26,7 @@ namespace SpeedCameraToPoi
         /// <summary>
         /// Background worker
         /// </summary>
-        private BackgroundWorker buildDatabaseBackgroundWorker;
+        private readonly BackgroundWorker buildDatabaseBackgroundWorker;
 
         /// <summary>
         /// In support of IDisposable Pattern
@@ -37,14 +39,16 @@ namespace SpeedCameraToPoi
         public MainWindow()
         {
             this.InitializeComponent();
-            this.buildDatabaseBackgroundWorker = new BackgroundWorker();
-            this.buildDatabaseBackgroundWorker.WorkerReportsProgress = true;
+            this.buildDatabaseBackgroundWorker = new BackgroundWorker
+            {
+                WorkerReportsProgress = true
+            };
             this.buildDatabaseBackgroundWorker.DoWork +=
-                new DoWorkEventHandler(this.BackgroundWorker1_DoWork);
+                new DoWorkEventHandler(this.BuildDatabaseBackgroundWorker_DoWork);
             this.buildDatabaseBackgroundWorker.ProgressChanged +=
-                new ProgressChangedEventHandler(this.BackgroundWorker1_ProgressChanged);
+                new ProgressChangedEventHandler(this.BuildDatabaseBackgroundWorker_ProgressChanged);
             this.buildDatabaseBackgroundWorker.RunWorkerCompleted +=
-                new RunWorkerCompletedEventHandler(this.BackgroundWorker1_RunWorkerCompleted);
+                new RunWorkerCompletedEventHandler(this.BuildDatabaseBackgroundWorker_RunWorkerCompleted);
         }
 
         /// <summary>
@@ -74,27 +78,6 @@ namespace SpeedCameraToPoi
         }
 
         /// <summary>
-        /// Bind the Drive List
-        /// </summary>
-        private void BindDriveList()
-        {
-            DriveInfo[] allDrives = DriveInfo.GetDrives();
-
-            foreach (DriveInfo d in allDrives)
-            {
-                if (d.DriveType.Equals(DriveType.Removable))
-                {
-                    targetDriveComboBox.Items.Add(d.Name);
-                }
-            }
-
-            if (targetDriveComboBox.Items.Count > 0)
-            {
-                targetDriveComboBox.SelectedIndex = 0;
-            }
-        }
-
-        /// <summary>
         /// Handle the button click event
         /// </summary>
         /// <param name="sender">the Sender object</param>
@@ -115,7 +98,7 @@ namespace SpeedCameraToPoi
                     return;
                 }
 
-                if (this.targetDriveComboBox.SelectedValue == null)
+                if (this.targetDriveComboBox.SelectedItem == null)
                 {
                     MessageBox.Show(Properties.Resources.TargetDriveError, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                     return;
@@ -128,7 +111,7 @@ namespace SpeedCameraToPoi
                 {
                     Username = this.usernameTextBox.Text,
                     Password = this.passwordBox.Password,
-                    TargertDrive = this.targetDriveComboBox.SelectedValue.ToString(),
+                    TargertDrive = ((ComboBoxItem)this.targetDriveComboBox.SelectedItem).Tag.ToString(),
                     IncludeUnverified = this.yesRadioButton.IsChecked.HasValue && (bool)this.yesRadioButton.IsChecked,
                     IncludeStatic = this.fixedCheckBox.IsChecked.HasValue && (bool)this.fixedCheckBox.IsChecked,
                     IncludeMobile = this.mobileCheckBox.IsChecked.HasValue && (bool)this.mobileCheckBox.IsChecked,
@@ -146,9 +129,12 @@ namespace SpeedCameraToPoi
         /// <param name="sender">Sender Argument</param>
         /// <param name="e">Event Argument</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2001:AvoidCallingProblematicMethods", MessageId = "System.GC.Collect", Justification = "Required to ensure the SQLite DB is released")]
-        private void BackgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        private void BuildDatabaseBackgroundWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             CameraSettings settings = (CameraSettings)e.Argument;
+
+            LoggingClient logger = new LoggingClient(App.Configuration);
+            logger.Log(settings.Username, "Invoked");
 
             if (Directory.Exists(settings.TargertDrive))
             {
@@ -163,13 +149,18 @@ namespace SpeedCameraToPoi
                 }
                 catch (WebException webException)
                 {
+                    logger.Log(settings.Username, $"Exception (Load) - {webException.Message}");
+
                     // Offer the user to build from manual download
                     if (MessageBox.Show(webException.Message + "\r\r" + Properties.Resources.ManualDownloadPrompt, Properties.Resources.ErrorTitle, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.Yes) == MessageBoxResult.Yes)
                     {
                         MessageBox.Show(Properties.Resources.ManualDownloadGuidance, Properties.Resources.ManualDownloadGuidanceTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-                        Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog();
-                        fileDialog.DefaultExt = ".zip";
-                        fileDialog.Filter = "Zip Files|*.zip";
+                        Microsoft.Win32.OpenFileDialog fileDialog = new Microsoft.Win32.OpenFileDialog
+                        {
+                            DefaultExt = ".zip",
+                            Filter = "Zip Files|*.zip"
+                        };
+
                         bool? dialogResult = fileDialog.ShowDialog();
                         if (dialogResult == true)
                         {
@@ -184,6 +175,8 @@ namespace SpeedCameraToPoi
                     return;
                 }
 
+                SpeedCameras.UploadCameras(settings.Username, camerasZip);
+
                 Collection<PointOfInterestCategory> cameras = null;
 
                 try
@@ -195,6 +188,7 @@ namespace SpeedCameraToPoi
                 }
                 catch (FileFormatException fileFormatException)
                 {
+                    logger.Log(settings.Username, $"Exception (Unpack) - {fileFormatException.Message}");
                     MessageBox.Show(fileFormatException.Message, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 }
 
@@ -213,6 +207,7 @@ namespace SpeedCameraToPoi
                     int loadedWaypoints = PointOfInterestDatabase.SavePois(mergedPois, settings.TargertDrive, this.buildDatabaseBackgroundWorker);
 
                     e.Result = loadedWaypoints;
+                    logger.Log(settings.Username, "Complete");
                 }
             }
             else
@@ -233,7 +228,7 @@ namespace SpeedCameraToPoi
         /// </summary>
         /// <param name="sender">Sender Argument</param>
         /// <param name="e">Event Argument</param>
-        private void BackgroundWorker1_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        private void BuildDatabaseBackgroundWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             this.progressBar.Value = e.ProgressPercentage;
             this.processButton.Content = e.UserState.ToString();
@@ -245,14 +240,21 @@ namespace SpeedCameraToPoi
         /// <param name="sender">Sender Argument</param>
         /// <param name="e">Event Argument</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1300:SpecifyMessageBoxOptions", Justification = "Our messagebox won't be right reading")]
-        private void BackgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void BuildDatabaseBackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Result != null && (int)e.Result >= 0)
             {
-                MessageBox.Show(
+                if ((bool)App.Current.Properties["auto"])
+                {
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show(
                     string.Format(Properties.Resources.CompletionFormatString, e.Result),
                     Properties.Resources.CompletionTitle);
-                this.progressBar.Value = 100;
+                    this.progressBar.Value = 100;
+                }
             }
             else
             {
@@ -271,9 +273,18 @@ namespace SpeedCameraToPoi
         /// <param name="e">The event args</param>
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            this.BindDriveList();
             Version version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             this.Title += string.Format(" (v{0}.{1}.{2}.{3})", version.Major, version.Minor, version.Build, version.MinorRevision);
+
+            if (UIUtils.BindDriveList(this.targetDriveComboBox))
+            {
+                this.processButton.IsEnabled = true;
+            }
+            else
+            {
+                this.processButton.IsEnabled = false;
+            }
+
             this.LoadSettings();
         }
 
@@ -285,7 +296,7 @@ namespace SpeedCameraToPoi
             usernameTextBox.Text = Properties.Settings.Default.PocketGpsWorldUsername;
             if (!string.IsNullOrEmpty(Properties.Settings.Default.PocketGpsWorldPassword))
             {
-                // passwordBox.Password = SecureStrings.ToInsecureString(SecureStrings.DecryptString(Properties.Settings.Default.PocketGpsWorldPassword));
+                passwordBox.Password = SecureStrings.ToInsecureString(SecureStrings.DecryptString(Properties.Settings.Default.PocketGpsWorldPassword));
             }
 
             yesRadioButton.IsChecked = Properties.Settings.Default.IncludeUnverifiedCameras;
@@ -303,7 +314,7 @@ namespace SpeedCameraToPoi
         {
             Properties.Settings.Default.PocketGpsWorldUsername = usernameTextBox.Text;
 
-            // Properties.Settings.Default.PocketGpsWorldPassword = SecureStrings.EncryptString(SecureStrings.ToSecureString(passwordBox.Password));
+            Properties.Settings.Default.PocketGpsWorldPassword = SecureStrings.EncryptString(SecureStrings.ToSecureString(passwordBox.Password));
             Properties.Settings.Default.IncludeUnverifiedCameras = yesRadioButton.IsChecked.HasValue ? (bool)yesRadioButton.IsChecked : true;
             Properties.Settings.Default.IncludeFixedCameras = fixedCheckBox.IsChecked.HasValue ? (bool)fixedCheckBox.IsChecked : true;
             Properties.Settings.Default.IncludeMobileCameras = mobileCheckBox.IsChecked.HasValue ? (bool)mobileCheckBox.IsChecked : true;
@@ -321,6 +332,47 @@ namespace SpeedCameraToPoi
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             this.SaveSettings();
+        }
+
+        /// <summary>
+        /// Handle the content rendered event
+        /// </summary>
+        /// <param name="sender">sender argument</param>
+        /// <param name="e">Event Argument</param>
+        private void Window_ContentRendered(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(App.Current.Properties["targetDrive"].ToString()))
+            {
+                // Default the drive
+                if (!UIUtils.SelectItemByTag(this.targetDriveComboBox, App.Current.Properties["targetDrive"].ToString()))
+                {
+                    MessageBox.Show(Properties.Resources.InvalidTargetDriveOnCommandLine, Properties.Resources.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+
+                    return;
+                }
+            }
+
+            if ((bool)App.Current.Properties["auto"])
+            {
+                this.ProcessButton_Click(this.processButton, new RoutedEventArgs());
+            }
+        }
+
+        /// <summary>
+        /// Event handler for the Refresh button
+        /// </summary>
+        /// <param name="sender">Sender Argument</param>
+        /// <param name="e">Event Argument</param>
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (UIUtils.BindDriveList(this.targetDriveComboBox))
+            {
+                this.processButton.IsEnabled = true;
+            }
+            else
+            {
+                this.processButton.IsEnabled = false;
+            }
         }
     }
 }
