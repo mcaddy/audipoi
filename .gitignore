@@ -10,3 +10,4 @@ StyleCop.Cache
 *.lock
 .vs/AudiPoi/DesignTimeBuild/.dtbcache
 *.ide-shm
+Logging/Properties/launchSettings.json
