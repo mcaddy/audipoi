@@ -19,11 +19,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoggingBackend", "Logging\L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "POILoaderBackend", "POILoaderBackend\POILoaderBackend.csproj", "{3E5B43F9-FE07-4484-BCD3-4D6F6C5FD59B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POILoader", "POILoader\POILoader.csproj", "{4425B76F-E29D-49F9-9E7B-4CA00C6B0F49}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure Functions", "Azure Functions", "{5E05172D-5C8B-450E-B5C5-074A4BFA916F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{6F13CAC5-BE78-419E-809F-BE46E8159A59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "POIBuilder", "POIBuilder\POIBuilder.csproj", "{4425B76F-E29D-49F9-9E7B-4CA00C6B0F49}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
