@@ -41,7 +41,7 @@ namespace SpeedCameraToPoi
                     case "-auto":
                         auto = true;
                         break;
-                    case "-targetdrive":
+                    case "-target":
                         if (e.Args.Length > (i + 1))
                         {
                             targetDrive = e.Args[i + 1];

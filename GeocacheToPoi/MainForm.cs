@@ -42,7 +42,7 @@ namespace Mcaddy.Audi
 
             foreach (DriveInfo d in allDrives)
             {
-                if (d.DriveType.Equals(DriveType.Removable))
+                if (d.DriveType.Equals(DriveType.Removable) && d.IsReady)
                 {
                     filterItems.Add(d.Name, $"{d.Name} - {d.VolumeLabel} ({UIUtils.SizeSuffix(d.TotalSize, 1)})");
                 }
@@ -176,6 +176,13 @@ namespace Mcaddy.Audi
                 }
 
                 targetDriveComboBox.SelectedValue = Program.TargetDrive;
+
+                if (targetDriveComboBox.SelectedValue == null)
+                {
+                    MessageBox.Show(Resources.InvalidTargetDriveOnCommandLine, Resources.ErrorTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    return;
+                }
 
                 this.ProcessButton_Click(this.processButton, new EventArgs());
             }

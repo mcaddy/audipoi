@@ -62,10 +62,10 @@ namespace Mcaddy.Audi
                     case "-auto":
                         Auto = true;
                         break;
-                    case "-targetdrive":
+                    case "-target":
                         if (args.Length > (i + 1))
                         {
-                            TargetDrive = args[i + 1];
+                            TargetDrive = args[i + 1].ToUpper();
                         }
 
                         break;

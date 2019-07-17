@@ -95,5 +95,14 @@ namespace Mcaddy.GeocacheToPoi.Properties {
                 return ResourceManager.GetString("FileNotFoundError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid target drive specified on command line.
+        /// </summary>
+        internal static string InvalidTargetDriveOnCommandLine {
+            get {
+                return ResourceManager.GetString("InvalidTargetDriveOnCommandLine", resourceCulture);
+            }
+        }
     }
 }
