@@ -3,7 +3,7 @@
 //     All rights reserved
 // </copyright>
 //-----------------------------------------------------------------------
-namespace POILoader
+namespace POIBuilder
 {
     using System.Windows;
     using Mcaddy;

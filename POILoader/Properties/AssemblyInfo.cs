@@ -7,11 +7,11 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 
-[assembly: AssemblyTitle("POILoader")]
+[assembly: AssemblyTitle("Audi POI Builder")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mike Caddy")]
-[assembly: AssemblyProduct("POILoader")]
+[assembly: AssemblyProduct("AudiPOIBuilder")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -1,7 +1,7 @@
-﻿<Application x:Class="POILoader.App"
+﻿<Application x:Class="POIBuilder.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:POILoader"
+             xmlns:local="clr-namespace:POIBuilder"
              StartupUri="MainWindow.xaml" Startup="Application_Startup">
     <Application.Resources>
          
