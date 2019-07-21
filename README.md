@@ -9,7 +9,7 @@ Currently the app will group cameras into 5 categories:-
 * Specs - Average Speed cameras
 * RedLight - Traffic Light cameras (some of which double up as speed cameras)
 
-Latest version - [v0.9.3](https://github.com/mcaddy/audipoi/raw/master/Releases/SpeedCameraToPoi_v0.9.3.zip)
+Latest version - [v0.9.4](https://github.com/mcaddy/audipoi/raw/master/Releases/SpeedCameraToPoi_v0.9.4.zip)
 
 To install unpack the contents of the zip file into a folder of your choice and run SpeedCameraToPoi.exe
 
@@ -26,7 +26,7 @@ Currently the app can source the following POI categories:-
 * Historic Houses
 * RSPB Reserves
 
-Latest version - [v0.9.0](https://github.com/mcaddy/audipoi/raw/master/Releases/POIBuilder_v0.9.0.zip)
+Latest version - [v0.9.1](https://github.com/mcaddy/audipoi/raw/master/Releases/POIBuilder_v0.9.1.zip)
 
 To install unpack the contents of the zip file into a folder of your choice and run AudiPoiBuilder.exe
 
@@ -47,6 +47,6 @@ Currently the app will group caches by type, the following types will be created
 
 Optionally users can decide to exclude their own caches or found caches.
 
-Latest version - [v0.9.1](https://github.com/mcaddy/audipoi/raw/master/Releases/GeocacheToPoi_v0.9.1.zip)
+Latest version - [v0.9.2](https://github.com/mcaddy/audipoi/raw/master/Releases/GeocacheToPoi_v0.9.2.zip)
 
 if you have features you'd like to see send me a mail
