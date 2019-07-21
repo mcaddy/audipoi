@@ -95,7 +95,7 @@ namespace Mcaddy.AudiPoiDatabase.Properties {
         ///variant4 = &quot;FM2-*-*-EU-AU-*&quot;
         ///variant5 = &quot;FM2-*-*-EU-PO*&quot; 
         ///variant6 = &quot;FM2-*-*-EU-PO-*&quot;
-        ///release = &quot;201 [rest of string was truncated]&quot;;.
+        ///variant7 = &quot;FM [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string metainfo2TxtTemplate {
             get {
