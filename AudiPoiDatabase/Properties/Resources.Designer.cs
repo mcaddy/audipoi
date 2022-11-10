@@ -19,7 +19,7 @@ namespace Mcaddy.AudiPoiDatabase.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -95,7 +95,7 @@ namespace Mcaddy.AudiPoiDatabase.Properties {
         ///variant4 = &quot;FM2-*-*-EU-AU-*&quot;
         ///variant5 = &quot;FM2-*-*-EU-PO*&quot; 
         ///variant6 = &quot;FM2-*-*-EU-PO-*&quot;
-        ///variant7 = &quot;FM [rest of string was truncated]&quot;;.
+        ///variant7 = &quot;FM2-H-*-EU-SK-MQB&quot; [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string metainfo2TxtTemplate {
             get {
@@ -148,7 +148,7 @@ namespace Mcaddy.AudiPoiDatabase.Properties {
         ///name.pl_PL=myAudi cele specjalne
         ///name.cs_CZ=zvláštní cíle myAudi
         ///name.nb_NO=myAudi spesialmål
-        ///name.sv_SE [rest of string was truncated]&quot;;.
+        ///name.sv_SE=myAudi special [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string UpdateTxtTemplate {
             get {
