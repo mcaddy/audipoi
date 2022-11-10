@@ -6,7 +6,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis" Version="3.1.0" />
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.29" />
-    <PackageReference Include="System.Drawing.Common" Version="4.6.0-preview6.19303.8" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AudiPoiDatabase\AudiPoiDatabase.csproj" />
