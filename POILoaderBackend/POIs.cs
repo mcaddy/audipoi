@@ -173,18 +173,14 @@ namespace POILoaderBackend
         {
             try
             {
-                using (MemoryStream ms = new MemoryStream(zipFile))
+                using MemoryStream ms = new MemoryStream(zipFile);
+                using ZipArchive archive = new ZipArchive(ms);
+                foreach (ZipArchiveEntry entry in archive.Entries)
                 {
-                    using (ZipArchive archive = new ZipArchive(ms))
+                    if (entry.FullName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
                     {
-                        foreach (ZipArchiveEntry entry in archive.Entries)
-                        {
-                            if (entry.FullName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
-                            {
-                                StreamReader streamReader = new StreamReader(entry.Open());
-                                return streamReader.ReadToEnd();
-                            }
-                        }
+                        StreamReader streamReader = new StreamReader(entry.Open());
+                        return streamReader.ReadToEnd();
                     }
                 }
             }
